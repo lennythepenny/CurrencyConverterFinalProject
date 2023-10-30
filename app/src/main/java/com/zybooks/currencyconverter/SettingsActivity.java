@@ -14,7 +14,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();
     }
-
+//hi
     public static class SettingsFragment extends PreferenceFragmentCompat {
 
         @Override
