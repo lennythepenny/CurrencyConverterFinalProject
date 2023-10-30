@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/currentCurrencyEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_current_currency"
+        android:layout_margin="16dp"/>
+
+    <TextView
+        android:id="@+id/finalCurrencyTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/currentCurrencyEditText"
+        android:layout_margin="16dp"
+        android:text="@string/final_currency_will_be_displayed_here"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/currentCurrencySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/finalCurrencyTextView"
+        android:layout_margin="16dp" />
+
+    <Spinner
+        android:id="@+id/finalCurrencySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/currentCurrencySpinner"
+        android:layout_margin="16dp" />
+
+    <Button
+        android:id="@+id/calculateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/finalCurrencySpinner"
+        android:layout_margin="16dp"
+        android:text="@string/calculate" />
+
+    <Button
+        android:id="@+id/clearButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calculateButton"
+        android:layout_margin="16dp"
+        android:text="@string/clear" />
+
+    <Button
+        android:id="@+id/favoritesButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/clearButton"
+        android:layout_margin="16dp"
+        android:text="@string/favorites" />
+
+    <Button
+        android:id="@+id/swapButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/favoritesButton"
+        android:layout_margin="16dp"
+        android:text="@string/swap" />
+</RelativeLayout>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Currency Converter</string>
+    <string name="enter_current_currency">Enter current currency</string>
+    <string name="final_currency_will_be_displayed_here">Final currency will be displayed here</string>
+    <string name="calculate">Calculate</string>
+    <string name="clear">Clear</string>
+    <string name="favorites">Favorites</string>
+    <string name="swap">Swap</string>
+</resources>

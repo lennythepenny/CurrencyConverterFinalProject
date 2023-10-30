@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="clearButton" type="id" />
+    <item name="favoritesButton" type="id" />
+    <item name="swapButton" type="id" />
+    <item name="currentCurrencySpinner" type="id" />
+    <item name="finalCurrencySpinner" type="id" />
+</resources>

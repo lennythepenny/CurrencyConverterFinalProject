@@ -1,0 +1,35 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="General Settings">
+
+        <!-- Switch Preference -->
+        <SwitchPreferenceCompat
+            android:key="enable_feature"
+            android:title="Enable Feature"
+            android:summary="Enable or disable this feature"
+            android:defaultValue="true" />
+
+        <!-- List Preference -->
+        <ListPreference
+            android:key="language"
+            android:title="Language"
+            android:summary="Select your preferred language"
+            android:defaultValue="en"
+            android:entries="@array/language_entries"
+            android:entryValues="@array/language_values" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Appearance Settings">
+
+        <!-- Color Preference -->
+        <ColorPreferenceCompat
+            android:key="theme_color"
+            android:title="App Theme Color"
+            android:defaultValue="#3498db" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
