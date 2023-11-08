@@ -76,9 +76,3 @@ The Currency Converter App is designed to allow users to convert various currenc
 **Components**:
 - Preferences for app theme and default currency.
 
-### 4. `activity_display_information.xml`
-**Description**: Layout for displaying information about currency exchange rates.
-
-**Components**:
-- Information about exchange rates.
-- Navigation button to the main screen.
