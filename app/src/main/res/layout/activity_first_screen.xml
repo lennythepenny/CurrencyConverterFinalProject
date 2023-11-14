@@ -20,7 +20,7 @@
     <Button
         android:id="@+id/startButton"
         android:layout_width="174dp"
-        android:layout_height="47dp"
+        android:layout_height="50dp"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="252dp"
         android:text="@string/start_converting"

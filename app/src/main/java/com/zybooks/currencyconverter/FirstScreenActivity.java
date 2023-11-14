@@ -18,7 +18,6 @@ public class FirstScreenActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create an Intent to navigate to the MainActivity
                 Intent intent = new Intent(FirstScreenActivity.this, MainActivity.class);
                 startActivity(intent);
             }

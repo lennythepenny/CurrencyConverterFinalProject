@@ -7,71 +7,124 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/currentCurrencyEditText"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/enter_current_currency"
-        android:layout_margin="16dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/orange">
 
-    <TextView
-        android:id="@+id/finalCurrencyTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/currentCurrencyEditText"
-        android:layout_margin="16dp"
-        android:text="@string/final_currency_will_be_displayed_here"
-        android:textSize="18sp" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
 
-    <Spinner
-        android:id="@+id/currentCurrencySpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/finalCurrencyTextView"
-        android:layout_margin="16dp" />
+        <ImageView
+            android:id="@+id/exchangeIcon"
+            android:layout_width="match_parent"
+            android:layout_height="173dp"
+            android:src="@drawable/currency_swap_pic"
+            android:layout_marginBottom="15dp"/>
 
-    <Spinner
-        android:id="@+id/finalCurrencySpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/currentCurrencySpinner"
-        android:layout_margin="16dp" />
+        <TextView
+            android:id="@+id/selectCurr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_currency"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="15dp"/>
 
-    <Button
-        android:id="@+id/calculateButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/finalCurrencySpinner"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/calculate"
-        app:backgroundTint="@color/orange"/>
+        <EditText
+            android:id="@+id/currencyOne"
+            android:layout_width="200dp"
+            android:layout_height="59dp"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="text"
+            android:text="@string/currency_1"
+            android:layout_marginBottom="15dp"/>
 
-    <Button
-        android:id="@+id/clearButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/calculateButton"
-        android:layout_margin="16dp"
-        android:text="@string/clear"
-        app:backgroundTint="@color/orange"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/favoritesButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/clearButton"
-        android:layout_margin="16dp"
-        android:text="@string/favorites"
-        app:backgroundTint="@color/orange"/>
+            <ImageView
+                android:id="@+id/swapButton"
+                android:layout_width="131dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="70dp"
+                android:layout_marginBottom="15dp"
+                android:src="@drawable/swap_button" />
 
-    <Button
-        android:id="@+id/swapButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/favoritesButton"
-        android:layout_margin="16dp"
-        app:backgroundTint="@color/orange" />
+            <ImageView
+                android:id="@+id/unfilledFavorite"
+                android:layout_width="131dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/favorites_unfilled"
+                android:layout_marginEnd="70dp"
+                android:layout_marginBottom="15dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/selectCurrExchange"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:gravity="center"
+            android:text="@string/select_currency_to_exchange"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="15dp"/>
+
+        <EditText
+            android:id="@+id/currencyTwo"
+            android:layout_width="200dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="text"
+            android:text="@string/currency_2"
+            android:layout_marginBottom="15dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/convertButton"
+                android:layout_width="201dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/green"
+                android:text="@string/convert"
+                android:layout_marginBottom="50dp"/>
+
+            <Button
+                android:id="@+id/clearButton2"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:text="@string/clear2"
+                android:textColor="@color/black"
+                android:layout_marginBottom="50dp"/>
+        </LinearLayout>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            tools:ignore="BottomAppBar" />
+
+    </LinearLayout>
 </RelativeLayout>

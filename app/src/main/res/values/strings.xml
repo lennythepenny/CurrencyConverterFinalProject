@@ -7,4 +7,10 @@
     <string name="favorites">Favorites</string>
     <string name="swap">Swap</string>
     <string name="start_converting">Start Converting</string>
+    <string name="convert">Convert</string>
+    <string name="clear2">Clear</string>
+    <string name="select_currency">Select Currency</string>
+    <string name="currency_1">Currency 1</string>
+    <string name="select_currency_to_exchange">Select Currency to Exchange</string>
+    <string name="currency_2">Currency 2</string>
 </resources>

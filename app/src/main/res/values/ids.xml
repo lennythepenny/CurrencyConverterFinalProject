@@ -2,7 +2,7 @@
 <resources>
     <item name="clearButton" type="id" />
     <item name="favoritesButton" type="id" />
-    <item name="swapButton" type="id" />
+    <item name="swap_button" type="id" />
     <item name="currentCurrencySpinner" type="id" />
     <item name="finalCurrencySpinner" type="id" />
 </resources>
