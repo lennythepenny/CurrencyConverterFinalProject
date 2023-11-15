@@ -13,4 +13,18 @@
     <string name="currency_1">Currency 1</string>
     <string name="select_currency_to_exchange">Select Currency to Exchange</string>
     <string name="currency_2">Currency 2</string>
+
+    <string-array name="currencies_array">
+        <item>United States Dollar(USD)</item>
+        <item>Euro (EUR)</item>
+        <item>Japanese Yen (JPY)</item>
+        <item>British Pound Sterling (GBP)</item>
+        <item>Australian Dollar (AUD)</item>
+        <item>Canadian Dollar (CAD)</item>
+        <item>Swiss Franc (CHF)</item>
+        <item>Chinese Yuan (CNY)</item>
+        <item>Swedish Krona (SEK)</item>
+        <item>New Zealand Dollar (NZD)</item>
+    </string-array>
+
 </resources>

@@ -8,16 +8,18 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class FirstScreenActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_screen);
 
-        Button startButton = findViewById(R.id.startButton);
+        Button startMainActivityButton = findViewById(R.id.startButton);
 
-        startButton.setOnClickListener(new View.OnClickListener() {
+        startMainActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Create an Intent to start MainActivity
                 Intent intent = new Intent(FirstScreenActivity.this, MainActivity.class);
                 startActivity(intent);
             }

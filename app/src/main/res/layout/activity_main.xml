@@ -8,25 +8,21 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:backgroundTint="@color/white"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme">
-            <!-- Back button -->
-            <ImageButton
-                android:id="@+id/backButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/back_button" />
+            android:theme="?attr/actionBarTheme"
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="65dp"
                 android:layout_gravity="center"
                 android:src="@drawable/xchange_black" />
 
@@ -35,7 +31,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="663dp"
+        android:layout_height="match_parent"
         android:background="@color/orange"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -43,7 +39,7 @@
         <ImageView
             android:id="@+id/exchangeIcon"
             android:layout_width="match_parent"
-            android:layout_height="119dp"
+            android:layout_height="97dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="5dp"
             android:src="@drawable/currency_swap_pic" />
@@ -59,44 +55,42 @@
             android:textSize="25sp"
             android:textStyle="bold" />
 
-        <EditText
+        <Spinner
             android:id="@+id/currencyOne"
             android:layout_width="200dp"
-            android:layout_height="59dp"
+            android:layout_height="48dp"
             android:layout_gravity="center"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="15dp"
             android:background="@color/white"
-            android:ems="10"
             android:gravity="center"
-            android:inputType="text"
-            android:text="@string/currency_1" />
+            android:spinnerMode="dropdown"></Spinner>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="66dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
 
             <ImageView
-                android:id="@+id/swapButton"
-                android:layout_width="131dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="70dp"
-                android:layout_marginBottom="15dp"
-                android:src="@drawable/swap_button" />
+                android:id="@+id/swapVert"
+                android:layout_width="70dp"
+                android:layout_height="59dp"
+                android:layout_gravity="center"
+                android:src="@drawable/swap_vert" />
 
             <ImageView
-                android:id="@+id/unfilledFavorite"
-                android:layout_width="131dp"
+                android:id="@+id/favoriteBorder"
+                android:layout_width="56dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="70dp"
-                android:layout_marginBottom="15dp"
-                android:src="@drawable/favorites_unfilled" />
+                android:layout_gravity="center"
+                android:src="@drawable/favorite_border" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/selectCurrExchange"
             android:layout_width="match_parent"
-            android:layout_height="47dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:gravity="center"
             android:text="@string/select_currency_to_exchange"
@@ -104,54 +98,55 @@
             android:textSize="25sp"
             android:textStyle="bold" />
 
-        <EditText
+        <Spinner
             android:id="@+id/currencyTwo"
             android:layout_width="200dp"
-            android:layout_height="56dp"
+            android:layout_height="48dp"
             android:layout_gravity="center"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="15dp"
             android:background="@color/white"
-            android:ems="10"
             android:gravity="center"
-            android:inputType="text"
-            android:text="@string/currency_2" />
+            android:spinnerMode="dropdown"></Spinner>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
 
             <Button
                 android:id="@+id/convertButton"
                 android:layout_width="201dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:backgroundTint="@color/green"
-                android:text="@string/convert" />
+                android:text="@string/convert"
+                android:textStyle="bold"
+                android:textSize="17sp"/>
 
             <Button
                 android:id="@+id/clearButton2"
                 android:layout_width="210dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:backgroundTint="@color/white"
                 android:text="@string/clear2"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="17sp"/>
+
         </LinearLayout>
 
     </LinearLayout>
 
     <com.google.android.material.bottomappbar.BottomAppBar
+        android:gravity="center"
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="61dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:fabAlignmentMode="end"
-        app:fabCradleMargin="10dp"
-        app:fabCradleRoundedCornerRadius="15dp"
-        app:fabCradleVerticalOffset="10dp"
-        app:hideOnScroll="true"
         app:menu="@menu/bottom_app_bar_menu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
