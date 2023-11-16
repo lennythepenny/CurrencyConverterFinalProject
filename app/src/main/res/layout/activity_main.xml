@@ -13,12 +13,12 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
+            android:layout_width="366dp"
             android:layout_height="match_parent"
             android:backgroundTint="@color/white"
+            android:gravity="center"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            android:gravity="center">
+            android:theme="?attr/actionBarTheme">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -61,10 +61,20 @@
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="15dp"
             android:background="@color/white"
             android:gravity="center"
-            android:spinnerMode="dropdown"></Spinner>
+            android:spinnerMode="dropdown" />
+
+        <EditText
+            android:id="@+id/firstCurrency"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:ems="10"
+            android:inputType="number"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,10 +114,19 @@
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="15dp"
             android:background="@color/white"
             android:gravity="center"
-            android:spinnerMode="dropdown"></Spinner>
+            android:spinnerMode="dropdown" />
+        <EditText
+            android:id="@+id/secondCurrency"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:ems="10"
+            android:inputType="number"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -120,6 +139,7 @@
                 android:layout_width="201dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="25dp"
                 android:backgroundTint="@color/green"
                 android:text="@string/convert"
                 android:textStyle="bold"
@@ -130,6 +150,7 @@
                 android:layout_width="210dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_marginEnd="25dp"
                 android:backgroundTint="@color/white"
                 android:text="@string/clear2"
                 android:textColor="@color/black"
@@ -137,6 +158,17 @@
                 android:textSize="17sp"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/resultCurrency"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:text="@string/result"
+            android:background="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textSize="25sp" />
 
     </LinearLayout>
 

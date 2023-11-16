@@ -13,6 +13,10 @@
     <string name="currency_1">Currency 1</string>
     <string name="select_currency_to_exchange">Select Currency to Exchange</string>
     <string name="currency_2">Currency 2</string>
+    <string name="converted_value">Converted Value</string>
+    <string name="result">Result</string>
+    <string name="second_currency">Second Currency</string>
+    <string name="first_currency">First Currency</string>
 
     <string-array name="currencies_array">
         <item>United States Dollar(USD)</item>
