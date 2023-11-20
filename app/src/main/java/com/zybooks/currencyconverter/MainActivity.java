@@ -3,8 +3,10 @@ package com.zybooks.currencyconverter;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -17,15 +19,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Locale;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.navigation.NavigationView;
+
 /**
  * Final currency symbol format
  * Let each icon navigate to another activity
@@ -36,11 +42,39 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
     private ImageView swapButton;
     private boolean isRotated = false;
     private boolean isFavorite = false;
+    private BottomAppBar bottomAppBar;
+    private ArrayList<String> favoritesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bottomAppBar = findViewById(R.id.bottomAppBar);
+        bottomAppBar.replaceMenu(R.menu.bottom_app_bar_menu);
+
+        bottomAppBar.setOnMenuItemClickListener(new BottomAppBar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(android.view.MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_home) {
+                    //Do nothing we are in home
+                    return true;
+                } else if (itemId == R.id.action_favorites) {
+                    Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
+                    startActivity(favoritesIntent);
+                    return true;
+                } else if (itemId == R.id.action_account_circle) {
+                    Intent accountIntent = new Intent(MainActivity.this, AccountActivity.class);
+                    startActivity(accountIntent);
+                    return true;
+                } else if (itemId == R.id.action_settings) {
+                    Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivity(settingsIntent);
+                    return true;
+                }
+                return false;
+            }
+        });
         Spinner currencyOne = findViewById(R.id.currencyOne);
         Spinner currencyTwo = findViewById(R.id.currencyTwo);
         Button convertButton = findViewById(R.id.convertButton);
@@ -80,7 +114,6 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                 // Do nothing
             }
         });
-
         convertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,6 +146,14 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                         // Change the image resource based on the state
                         if (isFavorite) {
                             favoriteBorder.setImageResource(R.drawable.favorite_filled);
+                            Spinner currencyOne = findViewById(R.id.currencyOne);
+                            Spinner currencyTwo = findViewById(R.id.currencyTwo);
+                            String selectedCurrency = currencyOne.getSelectedItem().toString() + " to " + currencyTwo.getSelectedItem().toString();
+
+                            // Pass the selected currency to FavoritesActivity
+                            Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
+                            favoritesIntent.putExtra("selectedCurrency", selectedCurrency);
+                            //startActivity(favoritesIntent);
                         } else {
                             favoriteBorder.setImageResource(R.drawable.favorite_border);
                         }
@@ -134,21 +175,6 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             public void onClick(View view) {
                 // Swap current and final currencies
                 swapCurrencies(currencyOne, currencyTwo);
-            }
-        });
-
-        Toolbar toolbar = findViewById(R.id.topAppBar);
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
         swapButton.setOnClickListener(new View.OnClickListener() {
@@ -309,6 +335,8 @@ private void rotateButton() {
                 return 1.24;
             case "British Pound Sterling (GBP)_Euro (EUR)":
                 return 1.14;
+            case "British Pound Sterling (GBP)_Japanese Yen (JPY)":
+                return 186.02;
             case "British Pound Sterling (GBP)_Australian Dollar (AUD)":
                 return 1.91;
             case "British Pound Sterling (GBP)_Canadian Dollar (CAD)":

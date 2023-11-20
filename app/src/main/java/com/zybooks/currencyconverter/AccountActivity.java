@@ -1,4 +1,4 @@
 package com.zybooks.currencyconverter;
 
-public class CurrencyListActivity {
+public class AccountActivity {
 }
