@@ -1,7 +1,10 @@
 package com.zybooks.currencyconverter;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -10,18 +13,31 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.widget.Toolbar;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.material.bottomappbar.BottomAppBar;
+/**
+ * Swap is crashing and the app bar isn't centered correctly
+ * Once these two are fixed try to do the favorites button
+ * Try and fix the format of the final currency
+ * Once that is done try to make each icon navigate to the activity
+ */
+
+public class MainActivity<MenuItem> extends AppCompatActivity {
+    private ImageView swapButton;
+    private boolean isRotated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Spinner currencyOne = findViewById(R.id.currencyOne);
         Spinner currencyTwo = findViewById(R.id.currencyTwo);
         Button convertButton = findViewById(R.id.convertButton);
@@ -107,35 +123,39 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+        swapButton = findViewById(R.id.swapVert);
+
+        swapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                swapCurrencies(currencyOne, currencyTwo);
+                rotateButton(); //causing the crash
+            }
+        });
     }
 
     private void setDefaultCurrencies(ArrayAdapter<CharSequence> adapter, Spinner currencyOne, Spinner currencyTwo) {
-        CharSequence defaultCurrencyOne = "USD"; // Change this to your desired default currency
-        CharSequence defaultCurrencyTwo = "EUR"; // Change this to your desired default currency
+        CharSequence defaultCurrencyOne = "USD";
+        CharSequence defaultCurrencyTwo = "EUR";
 
-        // Find the position of the default currencies in the adapter
         int positionCurrencyOne = adapter.getPosition(defaultCurrencyOne);
         int positionCurrencyTwo = adapter.getPosition(defaultCurrencyTwo);
 
-        // Set the selection for each spinner
         currencyOne.setSelection(positionCurrencyOne);
         currencyTwo.setSelection(positionCurrencyTwo);
     }
 
-    private void convertCurrency() {
-        // Get the amount to be converted from the EditText
+    private double convertCurrency() {
         EditText amountEditText = findViewById(R.id.firstCurrency);
         String amountString = amountEditText.getText().toString();
 
-//        if (amountString.isEmpty()) {
-//            // Show an error message if the amount is not entered
-//            Toast.makeText(MainActivity.this, "Please enter the amount to convert", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        if (amountString.isEmpty()) {
+            Toast.makeText(MainActivity.this, "Please enter the amount to convert", Toast.LENGTH_SHORT).show();
+            return 0.0; // Return 0 if the amount is not entered
+        }
 
         double amountToConvert = Double.parseDouble(amountString);
 
-        // Get the selected currencies from the Spinners
         Spinner currencyOne = findViewById(R.id.currencyOne);
         Spinner currencyTwo = findViewById(R.id.currencyTwo);
 
@@ -150,33 +170,240 @@ public class MainActivity extends AppCompatActivity {
             targetCurrency = currencyTwo.getSelectedItem().toString();
         }
 
-        // Perform the currency conversion (replace with your actual conversion logic)
-        double result = amountToConvert * 2.0;
+        double exchangeRate = getExchangeRate(sourceCurrency, targetCurrency);
 
-        // Display the result in a TextView or any other UI element
+        double result = amountToConvert * exchangeRate;
+
         TextView resultTextView = findViewById(R.id.resultCurrency);
         resultTextView.setText(String.format(Locale.getDefault(), "%.2f", result));
+        return result;
     }
-
     private void clearFields() {
-        // Clear input fields and result
         EditText amountEditText = findViewById(R.id.firstCurrency);
+        EditText amountEditText2 = findViewById(R.id.secondCurrency);
         Spinner currencyOne = findViewById(R.id.currencyOne);
         Spinner currencyTwo = findViewById(R.id.currencyTwo);
         TextView resultTextView = findViewById(R.id.resultCurrency);
 
         amountEditText.setText("");
-        currencyOne.setSelection(0); // Set it to the first item in the list
+        amountEditText2.setText("");
+        currencyOne.setSelection(0);
         currencyTwo.setSelection(0);
         resultTextView.setText("");
     }
 
     private void swapCurrencies(Spinner currencyOne, Spinner currencyTwo) {
-        // Swap the selected currencies in the Spinners
+        Spinner spinCurrencyOne = findViewById(R.id.currencyOne);
+        Spinner spinCurrencyTwo = findViewById(R.id.currencyTwo);
+
         int selectedCurrencyOne = currencyOne.getSelectedItemPosition();
         int selectedCurrencyTwo = currencyTwo.getSelectedItemPosition();
 
         currencyOne.setSelection(selectedCurrencyTwo);
         currencyTwo.setSelection(selectedCurrencyOne);
+    }
+
+    private void rotateButton() {
+        float fromDegrees = 0.0f;
+        float toDegrees = isRotated ? 0.0f : 180.0f; // Rotate back to 0 if already rotated
+
+        RotateAnimation rotateAnimation = new RotateAnimation(
+                fromDegrees, toDegrees,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f
+        );
+
+        rotateAnimation.setDuration(500); // Adjust the duration as needed
+        rotateAnimation.setFillAfter(true);
+        swapButton.startAnimation(rotateAnimation); //causing the crash
+
+        isRotated = !isRotated;
+    }
+
+    private double getExchangeRate(String sourceCurrency, String targetCurrency) {
+        Log.d("CurrencyDebug", "Source Currency: " + sourceCurrency);
+        Log.d("CurrencyDebug", "Target Currency: " + targetCurrency);
+        switch (sourceCurrency + "_" + targetCurrency) {
+            case "United States Dollar (USD)_Euro (EUR)":
+                return 0.92;
+            case "United States Dollar (USD)_Japanese Yen (JPY)":
+                return 149.63;
+            case "United States Dollar (USD)_British Pound Sterling (GBP)":
+                return 0.85;
+            case "United States Dollar (USD)_Australian Dollar (AUD)":
+                return 1.54;
+            case "United States Dollar (USD)_Canadian Dollar (CAD)":
+                return 1.37;
+            case "United States Dollar (USD)_Swiss Franc (CHF)":
+                return 0.89;
+            case "United States Dollar (USD)_Chinese Yuan (CNY)":
+                return 7.21;
+            case "United States Dollar (USD)_Swedish Krona (SEK)":
+                return 10.54;
+            case "United States Dollar (USD)_New Zealand Dollar (NZD)":
+                return 1.67;
+            case "Euro (EUR)_United States Dollar (USD)":
+                return 1.09;
+            case "Euro (EUR)_Japanese Yen (JPY)":
+                return 163.38;
+            case"Euro (EUR)_British Pound Sterling (GBP)":
+                return 0.88;
+            case "Euro (EUR)_Australian Dollar (AUD)":
+                return 1.68;
+            case "Euro (EUR)_Canadian Dollar (CAD)":
+                return 1.50;
+            case "Euro (EUR)_Swiss Franc (CHF)":
+                return 0.97;
+            case "Euro (EUR)_Chinese Yuan (CNY)":
+                return 7.86;
+            case "Euro (EUR)_Swedish Krona (SEK)":
+                return 11.48;
+            case "Euro (EUR)_New Zealand Dollar (NZD)":
+                return 1.82;
+            case "Japanese Yen (JPY)_United States Dollar (USD)":
+                return 0.0067;
+            case "Japanese Yen (JPY)_Euro (EUR)":
+                return 0.0061;
+            case"Japanese Yen (JPY)_British Pound Sterling (GBP)":
+                return 0.0054;
+            case "Japanese Yen (JPY)_Australian Dollar (AUD)":
+                return 0.010;
+            case "Japanese Yen (JPY)_Canadian Dollar (CAD)":
+                return 0.0092;
+            case "Japanese Yen (JPY)_Swiss Franc (CHF)":
+                return 0.0059;
+            case "Japanese Yen (JPY)_Chinese Yuan (CNY)":
+                return 0.048;
+            case "Japanese Yen (JPY)_Swedish Krona (SEK)":
+                return 0.070;
+            case "Japanese Yen (JPY)_New Zealand Dollar (NZD)":
+                return 0.011;
+            case "British Pound Sterling (GBP)_United States Dollar (USD)":
+                return 1.24;
+            case "British Pound Sterling (GBP)_Euro (EUR)":
+                return 1.14;
+            case "British Pound Sterling (GBP)_Australian Dollar (AUD)":
+                return 1.91;
+            case "British Pound Sterling (GBP)_Canadian Dollar (CAD)":
+                return 1.71;
+            case "British Pound Sterling (GBP)_Swiss Franc (CHF)":
+                return 1.10;
+            case "British Pound Sterling (GBP)_Chinese Yuan (CNY)":
+                return 8.98;
+            case "British Pound Sterling (GBP)_Swedish Krona (SEK)":
+                return 13.12;
+            case "British Pound Sterling (GBP)_New Zealand Dollar (NZD)":
+                return 2.08;
+            case "Australian Dollar (AUD)_United States Dollar (USD)":
+                return 0.65;
+            case "Australian Dollar (AUD)_Euro (EUR)":
+                return 0.60;
+            case "Australian Dollar (AUD)_Japanese Yen (JPY)":
+                return 97.54;
+            case "Australian Dollar (AUD)_British Pound Sterling (GBP)":
+                return 0.52;
+            case "Australian Dollar (AUD)_Canadian Dollar (CAD)":
+                return 0.89;
+            case "Australian Dollar (AUD)_Swiss Franc (CHF)":
+                return 0.58;
+            case "Australian Dollar (AUD)_Chinese Yuan (CNY)":
+                return 4.69;
+            case "Australian Dollar (AUD)_Swedish Krona (SEK)":
+                return 6.86;
+            case "Australian Dollar (AUD)_New Zealand Dollar (NZD)":
+                return 1.09;
+            case "Canadian Dollar (CAD)_United States Dollar (USD)":
+                return 0.73;
+            case "Canadian Dollar (CAD)_Euro (EUR)":
+                return 0.67;
+            case "Canadian Dollar (CAD)_Japanese Yen (JPY)":
+                return 109.25;
+            case "Canadian Dollar (CAD)_British Pound Sterling (GBP)":
+                return 0.59;
+            case "Canadian Dollar (CAD)_Australian Dollar (AUD)":
+                return 1.12;
+            case "Canadian Dollar (CAD)_Swiss Franc (CHF)":
+                return 0.65;
+            case "Canadian Dollar (CAD)_Chinese Yuan (CNY)":
+                return 5.25;
+            case "Canadian Dollar (CAD)_Swedish Krona (SEK)":
+                return 7.68;
+            case "Canadian Dollar (CAD)_New Zealand Dollar (NZD)":
+                return 1.21;
+            case "Swiss Franc (CHF)_United States Dollar (USD)":
+                return 1.13;
+            case "Swiss Franc (CHF)_Euro (EUR)":
+                return 1.04;
+            case "Swiss Franc (CHF)_Japanese Yen (JPY)":
+                return 169.16;
+            case "Swiss Franc (CHF)_British Pound Sterling (GBP)":
+                return 0.91;
+            case "Swiss Franc (CHF)_Australian Dollar (AUD)":
+                return 1.73;
+            case "Swiss Franc (CHF)_Canadian Dollar (CAD)":
+                return 1.55;
+            case "Swiss Franc (CHF)_Chinese Yuan (CNY)":
+                return 8.14;
+            case "Swiss Franc (CHF)_Swedish Krona (SEK)":
+                return 11.88;
+            case "Swiss Franc (CHF)_New Zealand Dollar (NZD)":
+                return 1.88;
+            case "Chinese Yuan (CNY)_United States Dollar (USD)":
+                return 0.14;
+            case "Chinese Yuan (CNY)_Euro (EUR)":
+                return 0.13;
+            case "Chinese Yuan (CNY)_Japanese Yen (JPY)":
+                return 20.77;
+            case "Chinese Yuan (CNY)_British Pound Sterling (GBP)":
+                return 0.11;
+            case "Chinese Yuan (CNY)_Australian Dollar (AUD)":
+                return 0.22;
+            case "Chinese Yuan (CNY)_Canadian Dollar (CAD)":
+                return 0.20;
+            case "Chinese Yuan (CNY)_Swiss Franc (CHF)":
+                return 0.12;
+            case "Chinese Yuan (CNY)_Swedish Krona (SEK)":
+                return 1.46;
+            case "Chinese Yuan (CNY)_New Zealand Dollar (NZD)":
+                return 0.23;
+            case "Swedish Krona (SEK)_United States Dollar (USD)":
+                return 0.095;
+            case "Swedish Krona (SEK)_Euro (EUR)":
+                return 0.087;
+            case "Swedish Krona (SEK)_Japanese Yen (JPY)":
+                return 14.23;
+            case "Swedish Krona (SEK)_British Pound Sterling (GBP)":
+                return 0.076;
+            case "Swedish Krona (SEK)_Australian Dollar (AUD)":
+                return 0.15;
+            case "Swedish Krona (SEK)_Canadian Dollar (CAD)":
+                return 0.130;
+            case "Swedish Krona (SEK)_Swiss Franc (CHF)":
+                return 0.084;
+            case "Swedish Krona (SEK)_Chinese Yuan (CNY)":
+                return 0.68;
+            case "Swedish Krona (SEK)_New Zealand Dollar (NZD)":
+                return 0.16;
+            case "New Zealand Dollar (NZD)_United States Dollar (USD)":
+                return 0.60;
+            case "New Zealand Dollar (NZD)_Euro (EUR)":
+                return 0.55;
+            case "New Zealand Dollar (NZD)_Japanese Yen (JPY)":
+                return 89.88;
+            case "New Zealand Dollar (NZD)_British Pound Sterling (GBP)":
+                return 0.48;
+            case "New Zealand Dollar (NZD)_Australian Dollar (AUD)":
+                return 0.920;
+            case "New Zealand Dollar (NZD)_Canadian Dollar (CAD)":
+                return 0.82;
+            case "New Zealand Dollar (NZD)_Swiss Franc (CHF)":
+                return 0.53;
+            case "New Zealand Dollar (NZD)_Chinese Yuan (CNY)":
+                return 4.33;
+            case "New Zealand Dollar (NZD)_Swedish Krona (SEK)":
+                return 6.32;
+            default:
+                return 1.0;
+        }
     }
 }

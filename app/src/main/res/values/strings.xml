@@ -17,18 +17,8 @@
     <string name="result">Result</string>
     <string name="second_currency">Second Currency</string>
     <string name="first_currency">First Currency</string>
-
-    <string-array name="currencies_array">
-        <item>United States Dollar(USD)</item>
-        <item>Euro (EUR)</item>
-        <item>Japanese Yen (JPY)</item>
-        <item>British Pound Sterling (GBP)</item>
-        <item>Australian Dollar (AUD)</item>
-        <item>Canadian Dollar (CAD)</item>
-        <item>Swiss Franc (CHF)</item>
-        <item>Chinese Yuan (CNY)</item>
-        <item>Swedish Krona (SEK)</item>
-        <item>New Zealand Dollar (NZD)</item>
-    </string-array>
-
+    <string name="home">Home</string>
+    <string name="favorite">Favorites</string>
+    <string name="account">Account</string>
+    <string name="settings">Settings</string>
 </resources>
