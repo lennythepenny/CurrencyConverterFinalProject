@@ -1,5 +1,8 @@
 package com.zybooks.currencyconverter;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,15 +27,15 @@ import java.util.Locale;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 /**
- * Swap is crashing and the app bar isn't centered correctly
- * Once these two are fixed try to do the favorites button
- * Try and fix the format of the final currency
- * Once that is done try to make each icon navigate to the activity
+ * Final currency symbol format
+ * Let each icon navigate to another activity
+ * add functionality to add to favorites list once favorites button clicked
  */
 
 public class MainActivity<MenuItem> extends AppCompatActivity {
     private ImageView swapButton;
     private boolean isRotated = false;
+    private boolean isFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         Button convertButton = findViewById(R.id.convertButton);
         Button clearButton2 = findViewById(R.id.clearButton2);
         ImageView favoriteBorder = findViewById(R.id.favoriteBorder);
-        ImageView swapButton = findViewById(R.id.swapVert);
+        swapButton = findViewById(R.id.swapVert);
 
         // Initialize spinners with currency options
         ArrayAdapter<CharSequence> currencyAdapter = ArrayAdapter.createFromResource(this, R.array.currencies_array, android.R.layout.simple_spinner_item);
@@ -97,9 +100,34 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         favoriteBorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Open the FavoritesActivity
+                // Add animation for fading out
+                ObjectAnimator fadeOut = ObjectAnimator.ofFloat(favoriteBorder, "alpha", 1.0f, 0.0f);
+                fadeOut.setDuration(250); // Faster animation, adjust as needed
+
+                fadeOut.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        // Toggle favorite state
+                        isFavorite = !isFavorite;
+
+                        // Change the image resource based on the state
+                        if (isFavorite) {
+                            favoriteBorder.setImageResource(R.drawable.favorite_filled);
+                        } else {
+                            favoriteBorder.setImageResource(R.drawable.favorite_border);
+                        }
+
+                        // Add animation for fading in
+                        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(favoriteBorder, "alpha", 0.0f, 1.0f);
+                        fadeIn.setDuration(250); // Faster animation, adjust as needed
+                        fadeIn.start();
+                    }
+                });
+
+                fadeOut.start();
             }
         });
+
 
         swapButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,8 +151,6 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                 finish();
             }
         });
-        swapButton = findViewById(R.id.swapVert);
-
         swapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -202,24 +228,25 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         currencyOne.setSelection(selectedCurrencyTwo);
         currencyTwo.setSelection(selectedCurrencyOne);
     }
+private void rotateButton() {
+    float fromDegrees = swapButton.getRotation();
+    float toDegrees = isRotated ? 0.0f : 180.0f; // Rotate back to 0 if already rotated
 
-    private void rotateButton() {
-        float fromDegrees = 0.0f;
-        float toDegrees = isRotated ? 0.0f : 180.0f; // Rotate back to 0 if already rotated
+    ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(
+            swapButton, "rotation", fromDegrees, toDegrees
+    );
 
-        RotateAnimation rotateAnimation = new RotateAnimation(
-                fromDegrees, toDegrees,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f
-        );
+    rotateAnimation.setDuration(250); // Adjust the duration as needed
+    rotateAnimation.start();
 
-        rotateAnimation.setDuration(500); // Adjust the duration as needed
-        rotateAnimation.setFillAfter(true);
-        swapButton.startAnimation(rotateAnimation); //causing the crash
-
-        isRotated = !isRotated;
-    }
-
+    // Toggle the isRotated value after the animation completes
+    rotateAnimation.addListener(new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            isRotated = !isRotated;
+        }
+    });
+}
     private double getExchangeRate(String sourceCurrency, String targetCurrency) {
         Log.d("CurrencyDebug", "Source Currency: " + sourceCurrency);
         Log.d("CurrencyDebug", "Target Currency: " + targetCurrency);
