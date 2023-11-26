@@ -2,6 +2,7 @@ package com.zybooks.currencyconverter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -15,6 +16,11 @@ import com.zybooks.currencyconverter.R;
 import java.util.ArrayList;
 
 public class FavoritesActivity extends AppCompatActivity {
+    public interface OnFavoriteAddedListener {
+        void onFavoriteAdded(String currency);
+    }
+
+    private OnFavoriteAddedListener onFavoriteAddedListener;
 
     private ArrayList<String> favoritesList;
     private ArrayAdapter<String> favoritesAdapter;
@@ -54,14 +60,21 @@ public class FavoritesActivity extends AppCompatActivity {
         });
         favoritesListView.setOnItemClickListener((parent, view, position, id) -> {
             String selectedCurrency = favoritesList.get(position);
-
-            // Add the selected currency to favorites in FavoritesActivity
             addToFavorites(selectedCurrency);
         });
     }
-    public void addToFavorites(String currency) {
-        favoritesList.add(currency);
+    public void addToFavorites(String selectedCurrency) {
+        Log.d("CurrencyDebug", "Adding to favorites in FavoritesActivity: " + selectedCurrency);
+        favoritesList.add(selectedCurrency);
         favoritesAdapter.notifyDataSetChanged();
+
+        // Notify the listener in MainActivity that a favorite currency has been added
+        if (onFavoriteAddedListener != null) {
+            onFavoriteAddedListener.onFavoriteAdded(selectedCurrency);
+        }
+    }
+    public void setOnFavoriteAddedListener(OnFavoriteAddedListener listener) {
+        this.onFavoriteAddedListener = listener;
     }
     private void removeFromFavorites(int position) {
         favoritesList.remove(position);

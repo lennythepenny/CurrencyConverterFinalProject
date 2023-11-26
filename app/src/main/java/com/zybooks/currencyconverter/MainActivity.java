@@ -6,10 +6,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,19 +15,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.Locale;
-
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.navigation.NavigationView;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 /**
  * Final currency symbol format
@@ -49,6 +39,13 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        favoritesList = new ArrayList<>();
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("selectedCurrency")) {
+            String selectedCurrency = intent.getStringExtra("selectedCurrency");
+            addToFavorites(selectedCurrency);
+        }
         bottomAppBar = findViewById(R.id.bottomAppBar);
         bottomAppBar.replaceMenu(R.menu.bottom_app_bar_menu);
 
@@ -126,7 +123,8 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Clear input fields and result
-                clearFields();
+                //clearFields();
+                showClearConfirmationDialog();
             }
         });
 
@@ -149,11 +147,13 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                             Spinner currencyOne = findViewById(R.id.currencyOne);
                             Spinner currencyTwo = findViewById(R.id.currencyTwo);
                             String selectedCurrency = currencyOne.getSelectedItem().toString() + " to " + currencyTwo.getSelectedItem().toString();
+                            Log.d("CurrencyDebug", "Selected Currency in MainActivity if (isFavorite): " + selectedCurrency);
 
                             // Pass the selected currency to FavoritesActivity
                             Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
                             favoritesIntent.putExtra("selectedCurrency", selectedCurrency);
-                            //startActivity(favoritesIntent);
+                            addToFavorites(selectedCurrency);
+
                         } else {
                             favoriteBorder.setImageResource(R.drawable.favorite_border);
                         }
@@ -181,9 +181,16 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 swapCurrencies(currencyOne, currencyTwo);
-                rotateButton(); //causing the crash
+                rotateButton();
             }
         });
+    }
+
+    private void addToFavorites(String selectedCurrency) {
+        Log.d("CurrencyDebug", "Adding to favorites: " + selectedCurrency);
+        Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
+        favoritesIntent.putExtra("selected_currency", selectedCurrency);
+        favoritesList.add(selectedCurrency);
     }
 
     private void setDefaultCurrencies(ArrayAdapter<CharSequence> adapter, Spinner currencyOne, Spinner currencyTwo) {
@@ -230,18 +237,46 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         resultTextView.setText(String.format(Locale.getDefault(), "%.2f", result));
         return result;
     }
-    private void clearFields() {
+    private void showClearConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to clear?")
+                .setTitle("Clear Fields");
+
+        // Add the buttons
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked Yes button
+                clearFieldsConfirmed();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked No button
+                // Do nothing, close the dialog
+            }
+        });
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+
+        // Show the dialog
+        dialog.show();
+    }
+
+    private void clearFieldsConfirmed() {
         EditText amountEditText = findViewById(R.id.firstCurrency);
         EditText amountEditText2 = findViewById(R.id.secondCurrency);
         Spinner currencyOne = findViewById(R.id.currencyOne);
         Spinner currencyTwo = findViewById(R.id.currencyTwo);
         TextView resultTextView = findViewById(R.id.resultCurrency);
+        ImageView favoriteBorder = findViewById(R.id.favoriteBorder);
 
         amountEditText.setText("");
         amountEditText2.setText("");
         currencyOne.setSelection(0);
         currencyTwo.setSelection(0);
         resultTextView.setText("");
+        favoriteBorder.setImageResource(R.drawable.favorite_border);
     }
 
     private void swapCurrencies(Spinner currencyOne, Spinner currencyTwo) {

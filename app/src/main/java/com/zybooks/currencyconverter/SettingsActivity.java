@@ -2,36 +2,27 @@ package com.zybooks.currencyconverter;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new SettingsFragment())
-                .commit();
-    }
-//hi
-    public static class SettingsFragment extends PreferenceFragmentCompat {
+        setContentView(R.layout.activity_settings);
 
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.preferences, rootKey);
-
-            // Add listeners for your preferences
-            Preference preference = findPreference("your_preference_key");
-            if (preference != null) {
-                preference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        // Handle preference click
-                        return true;
-                    }
-                });
+        // Switch for dark mode using SwitchCompat
+        SwitchCompat darkModeSwitch = findViewById(R.id.darkModeSwitch);
+        darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Switch to dark mode
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                // Switch to light mode
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
-        }
+            recreate(); // Recreate the activity to apply the theme immediately
+        });
     }
 }

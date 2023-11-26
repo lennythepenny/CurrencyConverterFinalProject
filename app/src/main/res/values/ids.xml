@@ -5,4 +5,5 @@
     <item name="swap_button" type="id" />
     <item name="currentCurrencySpinner" type="id" />
     <item name="finalCurrencySpinner" type="id" />
+    <item name="toolbar" type="id" />
 </resources>
