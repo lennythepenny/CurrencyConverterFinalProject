@@ -23,26 +23,34 @@
             android:theme="?attr/actionBarTheme">
 
             <ImageView
+                android:id="@+id/xchange_logo"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:layout_gravity="center"
                 android:src="@drawable/xchange_black" />
-
-
         </androidx.appcompat.widget.Toolbar>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:src="@drawable/favorite_filled"
+             />
     </com.google.android.material.appbar.AppBarLayout>
-    <ListView
-        android:id="@+id/favoritesListView"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favoritesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp"
         android:padding="16dp" />
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavBar"
         android:layout_width="match_parent"
         android:layout_height="61dp"
         android:layout_gravity="bottom"
-        app:menu="@menu/bottom_app_bar_menu"/>
+        app:menu="@menu/bottom_app_bar_menu" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

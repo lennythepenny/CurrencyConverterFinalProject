@@ -1,12 +1,20 @@
 package com.zybooks.currencyconverter;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 
-public class SettingsActivity extends AppCompatActivity {
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+public class SettingsActivity extends AppCompatActivity {
+    private BottomAppBar bottomAppBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,5 +32,28 @@ public class SettingsActivity extends AppCompatActivity {
             }
             recreate(); // Recreate the activity to apply the theme immediately
         });
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavBar);
+
+        bottomNavigationView.setOnItemSelectedListener(
+                new BottomNavigationView.OnItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull android.view.MenuItem item) {
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.action_home) {
+                            startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+                            return true;
+                        } else if (itemId == R.id.action_favorites) {
+                            startActivity(new Intent(SettingsActivity.this, FavoritesActivity.class));
+                            return true;
+                        } else if (itemId == R.id.action_account_circle) {
+                            startActivity(new Intent(SettingsActivity.this, AccountActivity.class));
+                            return true;
+                        } else if (itemId == R.id.action_settings) {
+                            //Do nothing we are in settings activity
+                            return true;
+                        }
+                        return false;
+                    }
+                });
     }
 }

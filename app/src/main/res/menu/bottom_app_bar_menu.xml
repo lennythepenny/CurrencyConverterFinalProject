@@ -5,28 +5,28 @@
         android:id="@+id/action_home"
         android:title="@string/home"
         android:icon="@drawable/home_icon"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:enabled="true"
         android:checkable="true" />
     <item
         android:id="@+id/action_favorites"
         android:title="@string/favorite"
         android:icon="@drawable/favorite"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:enabled="true"
         android:checkable="true" />
     <item
         android:id="@+id/action_account_circle"
         android:title="@string/account"
         android:icon="@drawable/account_circle"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:enabled="true"
         android:checkable="true" />
     <item
         android:id="@+id/action_settings"
         android:title="@string/settings"
         android:icon="@drawable/settings_icon"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:enabled="true"
         android:checkable="true" />
 </menu>

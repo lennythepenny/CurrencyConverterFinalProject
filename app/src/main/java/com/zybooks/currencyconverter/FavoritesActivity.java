@@ -3,27 +3,24 @@ package com.zybooks.currencyconverter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.zybooks.currencyconverter.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
 public class FavoritesActivity extends AppCompatActivity {
-    public interface OnFavoriteAddedListener {
-        void onFavoriteAdded(String currency);
-    }
-
-    private OnFavoriteAddedListener onFavoriteAddedListener;
-
-    private ArrayList<String> favoritesList;
-    private ArrayAdapter<String> favoritesAdapter;
+    private RecyclerView favoritesRecyclerView;
+    private static FavoritesAdapter favoritesAdapter;
+    private static ArrayList<String> favoritesList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,50 +28,51 @@ public class FavoritesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorites);
 
         favoritesList = new ArrayList<>();
+        favoritesAdapter = new FavoritesAdapter(favoritesList);
 
-        ListView favoritesListView = findViewById(R.id.favoritesListView);
-        favoritesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, favoritesList);
-        favoritesListView.setAdapter(favoritesAdapter);
-        favoritesListView.setOnItemClickListener((parent, view, position, id) -> removeFromFavorites(position));
+        // Initialize RecyclerView and set its layout manager
+        favoritesRecyclerView = findViewById(R.id.favoritesRecyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        favoritesRecyclerView.setLayoutManager(layoutManager);
 
-        BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
-        bottomAppBar.setOnMenuItemClickListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.action_home) {
-                Intent mainIntent = new Intent(FavoritesActivity.this, MainActivity.class);
-                startActivity(mainIntent);
-                return true;
-            } else if (itemId == R.id.action_favorites) {
-                //Do nothing we are already in favorites
-                return true;
-            } else if (itemId == R.id.action_account_circle) {
-                Intent accountIntent = new Intent(FavoritesActivity.this, AccountActivity.class);
-                startActivity(accountIntent);
-                return true;
-            } else if (itemId == R.id.action_settings) {
-                Intent settingsIntent = new Intent(FavoritesActivity.this, SettingsActivity.class);
-                startActivity(settingsIntent);
-                return true;
-            }
-            return false;
-        });
-        favoritesListView.setOnItemClickListener((parent, view, position, id) -> {
-            String selectedCurrency = favoritesList.get(position);
+        // Initialize the adapter with the data
+        favoritesAdapter = new FavoritesAdapter(favoritesList);
+        favoritesRecyclerView.setAdapter(favoritesAdapter);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("selectedCurrency")) {
+            String selectedCurrency = intent.getStringExtra("selectedCurrency");
             addToFavorites(selectedCurrency);
-        });
+        }
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavBar);
+
+        bottomNavigationView.setOnItemSelectedListener(
+                new BottomNavigationView.OnItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull android.view.MenuItem item) {
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.action_home) {
+                            startActivity(new Intent(FavoritesActivity.this, MainActivity.class));
+                            return true;
+                        } else if (itemId == R.id.action_favorites) {
+                            //Do nothing we are in favorites activity
+                            return true;
+                        } else if (itemId == R.id.action_account_circle) {
+                            startActivity(new Intent(FavoritesActivity.this, AccountActivity.class));
+                            return true;
+                        } else if (itemId == R.id.action_settings) {
+                            startActivity(new Intent(FavoritesActivity.this, SettingsActivity.class));
+                            return true;
+                        }
+                        return false;
+                    }
+                });
     }
     public void addToFavorites(String selectedCurrency) {
         Log.d("CurrencyDebug", "Adding to favorites in FavoritesActivity: " + selectedCurrency);
         favoritesList.add(selectedCurrency);
         favoritesAdapter.notifyDataSetChanged();
-
-        // Notify the listener in MainActivity that a favorite currency has been added
-        if (onFavoriteAddedListener != null) {
-            onFavoriteAddedListener.onFavoriteAdded(selectedCurrency);
-        }
-    }
-    public void setOnFavoriteAddedListener(OnFavoriteAddedListener listener) {
-        this.onFavoriteAddedListener = listener;
     }
     private void removeFromFavorites(int position) {
         favoritesList.remove(position);

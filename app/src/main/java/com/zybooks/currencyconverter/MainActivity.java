@@ -6,6 +6,8 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,16 +17,19 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Locale;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 /**
  * Final currency symbol format
- * Let each icon navigate to another activity
  * add functionality to add to favorites list once favorites button clicked
  */
 
@@ -32,9 +37,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
     private ImageView swapButton;
     private boolean isRotated = false;
     private boolean isFavorite = false;
-    private BottomAppBar bottomAppBar;
     private ArrayList<String> favoritesList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,32 +49,29 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             String selectedCurrency = intent.getStringExtra("selectedCurrency");
             addToFavorites(selectedCurrency);
         }
-        bottomAppBar = findViewById(R.id.bottomAppBar);
-        bottomAppBar.replaceMenu(R.menu.bottom_app_bar_menu);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavBar);
 
-        bottomAppBar.setOnMenuItemClickListener(new BottomAppBar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(android.view.MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.action_home) {
-                    //Do nothing we are in home
-                    return true;
-                } else if (itemId == R.id.action_favorites) {
-                    Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
-                    startActivity(favoritesIntent);
-                    return true;
-                } else if (itemId == R.id.action_account_circle) {
-                    Intent accountIntent = new Intent(MainActivity.this, AccountActivity.class);
-                    startActivity(accountIntent);
-                    return true;
-                } else if (itemId == R.id.action_settings) {
-                    Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivity(settingsIntent);
-                    return true;
-                }
-                return false;
-            }
-        });
+        bottomNavigationView.setOnItemSelectedListener(
+                new BottomNavigationView.OnItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull android.view.MenuItem item) {
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.action_home) {
+                            // Do nothing, we are already in home
+                            return true;
+                        } else if (itemId == R.id.action_favorites) {
+                            startActivity(new Intent(MainActivity.this, FavoritesActivity.class));
+                            return true;
+                        } else if (itemId == R.id.action_account_circle) {
+                            startActivity(new Intent(MainActivity.this, AccountActivity.class));
+                            return true;
+                        } else if (itemId == R.id.action_settings) {
+                            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                            return true;
+                        }
+                        return false;
+                    }
+                });
         Spinner currencyOne = findViewById(R.id.currencyOne);
         Spinner currencyTwo = findViewById(R.id.currencyTwo);
         Button convertButton = findViewById(R.id.convertButton);
@@ -123,7 +123,6 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Clear input fields and result
-                //clearFields();
                 showClearConfirmationDialog();
             }
         });
@@ -132,6 +131,8 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Add animation for fading out
+                String sourceCurrency = currencyOne.getSelectedItem().toString();
+                addToFavorites(sourceCurrency);
                 ObjectAnimator fadeOut = ObjectAnimator.ofFloat(favoriteBorder, "alpha", 1.0f, 0.0f);
                 fadeOut.setDuration(250); // Faster animation, adjust as needed
 
@@ -146,14 +147,13 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                             favoriteBorder.setImageResource(R.drawable.favorite_filled);
                             Spinner currencyOne = findViewById(R.id.currencyOne);
                             Spinner currencyTwo = findViewById(R.id.currencyTwo);
-                            String selectedCurrency = currencyOne.getSelectedItem().toString() + " to " + currencyTwo.getSelectedItem().toString();
+                            String selectedCurrency = currencyOne.getSelectedItem().toString();
                             Log.d("CurrencyDebug", "Selected Currency in MainActivity if (isFavorite): " + selectedCurrency);
 
                             // Pass the selected currency to FavoritesActivity
                             Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
                             favoritesIntent.putExtra("selectedCurrency", selectedCurrency);
-                            addToFavorites(selectedCurrency);
-
+                            //addToFavorites(selectedCurrency);
                         } else {
                             favoriteBorder.setImageResource(R.drawable.favorite_border);
                         }
@@ -187,10 +187,20 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
     }
 
     private void addToFavorites(String selectedCurrency) {
-        Log.d("CurrencyDebug", "Adding to favorites: " + selectedCurrency);
-        Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
-        favoritesIntent.putExtra("selected_currency", selectedCurrency);
+        //Log.d("CurrencyDebug", "Adding to favorites: " + selectedCurrency);
         favoritesList.add(selectedCurrency);
+        Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
+        favoritesIntent.putExtra("selectedCurrency", selectedCurrency);
+        //startActivity(favoritesIntent);
+        Log.d("CurrencyDebug", "Adding to favorites in FavoritesActivity: " + selectedCurrency);
+        if (!favoritesList.contains(selectedCurrency)) {
+            favoritesList.add(selectedCurrency);
+            //favoritesAdapter.notifyDataSetChanged();
+        } else {
+            // Handle the case where the currency is already in favorites
+            // You can show a message or handle it in a way that fits your app logic
+            Log.d("CurrencyDebug", "Currency is already in favorites: " + selectedCurrency);
+        }
     }
 
     private void setDefaultCurrencies(ArrayAdapter<CharSequence> adapter, Spinner currencyOne, Spinner currencyTwo) {
@@ -255,11 +265,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                 // Do nothing, close the dialog
             }
         });
-
-        // Create the AlertDialog
         AlertDialog dialog = builder.create();
-
-        // Show the dialog
         dialog.show();
     }
 

@@ -2,11 +2,15 @@ package com.zybooks.currencyconverter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -22,26 +26,28 @@ public class AccountActivity extends AppCompatActivity {
         textViewName.setText("John Doe");
         textViewEmail.setText("john.doe@example.com");
         textViewAccountType.setText("Premium");
-        BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
-        bottomAppBar.setOnMenuItemClickListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.action_home) {
-                Intent mainIntent = new Intent(AccountActivity.this, MainActivity.class);
-                startActivity(mainIntent);
-                return true;
-            } else if (itemId == R.id.action_favorites) {
-                Intent favoritesIntent = new Intent(AccountActivity.this, FavoritesActivity.class);
-                startActivity(favoritesIntent);
-                return true;
-            } else if (itemId == R.id.action_account_circle) {
-                //Do nothing, we are already in the account activity
-                return true;
-            } else if (itemId == R.id.action_settings) {
-                Intent settingsIntent = new Intent(AccountActivity.this, SettingsActivity.class);
-                startActivity(settingsIntent);
-                return true;
-            }
-            return false;
-        });
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavBar);
+
+        bottomNavigationView.setOnItemSelectedListener(
+                new BottomNavigationView.OnItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull android.view.MenuItem item) {
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.action_home) {
+                            startActivity(new Intent(AccountActivity.this, MainActivity.class));
+                            return true;
+                        } else if (itemId == R.id.action_favorites) {
+                            startActivity(new Intent(AccountActivity.this, FavoritesActivity.class));
+                            return true;
+                        } else if (itemId == R.id.action_account_circle) {
+                            //Do nothing we are in account activity
+                            return true;
+                        } else if (itemId == R.id.action_settings) {
+                            startActivity(new Intent(AccountActivity.this, SettingsActivity.class));
+                            return true;
+                        }
+                        return false;
+                    }
+                });
     }
 }
