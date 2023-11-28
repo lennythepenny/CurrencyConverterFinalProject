@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">通貨換算器</string>
+    <string name="enter_current_currency">通貨を入力</string>
+    <string name="final_currency_will_be_displayed_here">ここに表示される最終通貨</string>
+    <string name="calculate">計算する</string>
+    <string name="clear">リセットする</string>
+    <string name="favorites">気に入り</string>
+    <string name="swap">スイッチ</string>
+    <string name="start_converting">変換を開始する</string>
+    <string name="convert">変換する</string>
+    <string name="clear2">リセットする</string>
+    <string name="select_currency">通貨を選択</string>
+    <string name="currency_1">通貨 1</string>
+    <string name="select_currency_to_exchange">交換する通貨を選択します</string>
+    <string name="currency_2">通貨 2</string>
+    <string name="converted_value">変換された値</string>
+    <string name="result">結果</string>
+    <string name="second_currency">第二の通貨</string>
+    <string name="first_currency">最初の通貨</string>
+    <string name="home">ホーム</string>
+    <string name="favorite">気に入り</string>
+    <string name="account">アカウント</string>
+    <string name="settings">設定</string>
+    <string name="name_john_doe">名前 ジョン ドゥ</string>
+    <string name="email_john_doe_example_com">電子メール: ジョン 。ドゥ @ 例 。com</string>
+    <string name="account_type_premium">アカウントタイプ:プレミアム</string>
+    <string name="select_default_currency" />
+    <string name="dark_mode">ダークモード</string>
+    <string name="decimal_places">小数位</string>
+</resources>

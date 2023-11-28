@@ -43,12 +43,11 @@
             android:orientation="vertical"
             android:background="@color/light_green">
 
-
-            <!-- Settings option: Decimal Places -->
-            <CheckBox
-                android:id="@+id/decimalPlacesCheckBox"
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/decimalPlacesSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
+                android:layout_gravity="start"
                 android:textSize="25sp"
                 android:background="@color/light_green"
                 android:text="@string/decimal_places"
@@ -56,7 +55,7 @@
 
             <Spinner
                 android:id="@+id/defaultCurrencySpinner"
-                android:layout_width="match_parent"
+                android:layout_width="275dp"
                 android:layout_height="50dp"
                 android:background="@color/light_green"
                 android:entries="@array/currencies_array"
@@ -68,7 +67,7 @@
                 android:id="@+id/darkModeSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_gravity="end"
+                android:layout_gravity="start"
                 android:paddingTop="8dp"
                 android:text="@string/dark_mode"
                 android:textSize="20sp"

@@ -13,8 +13,10 @@ import androidx.appcompat.widget.SwitchCompat;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 public class SettingsActivity extends AppCompatActivity {
-    private BottomAppBar bottomAppBar;
+    private ArrayList<String> favoritesList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +47,10 @@ public class SettingsActivity extends AppCompatActivity {
                         } else if (itemId == R.id.action_favorites) {
                             startActivity(new Intent(SettingsActivity.this, FavoritesActivity.class));
                             return true;
-                        } else if (itemId == R.id.action_account_circle) {
-                            startActivity(new Intent(SettingsActivity.this, AccountActivity.class));
+                        } else if (itemId == R.id.action_favorites) {
+                            Intent favoritesIntent = new Intent(SettingsActivity.this, FavoritesActivity.class);
+                            favoritesIntent.putStringArrayListExtra("favoritesList", favoritesList);
+                            startActivity(favoritesIntent);
                             return true;
                         } else if (itemId == R.id.action_settings) {
                             //Do nothing we are in settings activity

@@ -6,8 +6,6 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,19 +16,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Locale;
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 /**
  * Final currency symbol format
- * add functionality to add to favorites list once favorites button clicked
+ * Fix favorites navigation bar when you click it from another activity
+ * Add Multiple Languages
  */
 
 public class MainActivity<MenuItem> extends AppCompatActivity {
@@ -43,12 +42,26 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         favoritesList = new ArrayList<>();
+        Spinner currencyOne = findViewById(R.id.currencyOne);
+        Spinner currencyTwo = findViewById(R.id.currencyTwo);
+        Button convertButton = findViewById(R.id.convertButton);
+        Button clearButton2 = findViewById(R.id.clearButton2);
+        ImageView favoriteBorder = findViewById(R.id.favoriteBorder);
+        swapButton = findViewById(R.id.swapVert);
 
         Intent intent = getIntent();
         if (intent.hasExtra("selectedCurrency")) {
             String selectedCurrency = intent.getStringExtra("selectedCurrency");
             addToFavorites(selectedCurrency);
         }
+        favoriteBorder.setOnClickListener(view -> {
+            String selectedCurrency = currencyOne.getSelectedItem().toString();
+            addToFavorites(selectedCurrency);
+
+            Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
+            favoritesIntent.putExtra("selectedCurrency", selectedCurrency);
+            favoritesLauncher.launch(favoritesIntent);
+        });
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavBar);
 
         bottomNavigationView.setOnItemSelectedListener(
@@ -60,7 +73,9 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                             // Do nothing, we are already in home
                             return true;
                         } else if (itemId == R.id.action_favorites) {
-                            startActivity(new Intent(MainActivity.this, FavoritesActivity.class));
+                            Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
+                            favoritesIntent.putStringArrayListExtra("favoritesList", favoritesList);
+                            startActivity(favoritesIntent);
                             return true;
                         } else if (itemId == R.id.action_account_circle) {
                             startActivity(new Intent(MainActivity.this, AccountActivity.class));
@@ -72,12 +87,6 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                         return false;
                     }
                 });
-        Spinner currencyOne = findViewById(R.id.currencyOne);
-        Spinner currencyTwo = findViewById(R.id.currencyTwo);
-        Button convertButton = findViewById(R.id.convertButton);
-        Button clearButton2 = findViewById(R.id.clearButton2);
-        ImageView favoriteBorder = findViewById(R.id.favoriteBorder);
-        swapButton = findViewById(R.id.swapVert);
 
         // Initialize spinners with currency options
         ArrayAdapter<CharSequence> currencyAdapter = ArrayAdapter.createFromResource(this, R.array.currencies_array, android.R.layout.simple_spinner_item);
@@ -145,15 +154,14 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                         // Change the image resource based on the state
                         if (isFavorite) {
                             favoriteBorder.setImageResource(R.drawable.favorite_filled);
-                            Spinner currencyOne = findViewById(R.id.currencyOne);
-                            Spinner currencyTwo = findViewById(R.id.currencyTwo);
                             String selectedCurrency = currencyOne.getSelectedItem().toString();
+                            addToFavorites(selectedCurrency);
                             Log.d("CurrencyDebug", "Selected Currency in MainActivity if (isFavorite): " + selectedCurrency);
 
                             // Pass the selected currency to FavoritesActivity
                             Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
                             favoritesIntent.putExtra("selectedCurrency", selectedCurrency);
-                            //addToFavorites(selectedCurrency);
+                            favoritesLauncher.launch(favoritesIntent);
                         } else {
                             favoriteBorder.setImageResource(R.drawable.favorite_border);
                         }
@@ -187,15 +195,14 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
     }
 
     private void addToFavorites(String selectedCurrency) {
-        //Log.d("CurrencyDebug", "Adding to favorites: " + selectedCurrency);
-        favoritesList.add(selectedCurrency);
-        Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
-        favoritesIntent.putExtra("selectedCurrency", selectedCurrency);
-        //startActivity(favoritesIntent);
-        Log.d("CurrencyDebug", "Adding to favorites in FavoritesActivity: " + selectedCurrency);
+        Log.d("CurrencyDebug", "Adding to favorites: " + selectedCurrency);
         if (!favoritesList.contains(selectedCurrency)) {
             favoritesList.add(selectedCurrency);
-            //favoritesAdapter.notifyDataSetChanged();
+            // You can also update the UI or perform any other actions related to adding to favorites here
+            // Broadcast an intent with the updated favorites list
+            Intent updateFavoritesIntent = new Intent("updateFavorites");
+            updateFavoritesIntent.putStringArrayListExtra("favoritesList", favoritesList);
+            sendBroadcast(updateFavoritesIntent);
         } else {
             // Handle the case where the currency is already in favorites
             // You can show a message or handle it in a way that fits your app logic
@@ -295,25 +302,39 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         currencyOne.setSelection(selectedCurrencyTwo);
         currencyTwo.setSelection(selectedCurrencyOne);
     }
-private void rotateButton() {
-    float fromDegrees = swapButton.getRotation();
-    float toDegrees = isRotated ? 0.0f : 180.0f; // Rotate back to 0 if already rotated
+    private void rotateButton() {
+        float fromDegrees = swapButton.getRotation();
+        float toDegrees = isRotated ? 0.0f : 180.0f; // Rotate back to 0 if already rotated
 
-    ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(
-            swapButton, "rotation", fromDegrees, toDegrees
-    );
+        ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(
+                swapButton, "rotation", fromDegrees, toDegrees
+        );
 
-    rotateAnimation.setDuration(250); // Adjust the duration as needed
-    rotateAnimation.start();
+        rotateAnimation.setDuration(250); // Adjust the duration as needed
+        rotateAnimation.start();
 
-    // Toggle the isRotated value after the animation completes
-    rotateAnimation.addListener(new AnimatorListenerAdapter() {
+        // Toggle the isRotated value after the animation completes
+        rotateAnimation.addListener(new AnimatorListenerAdapter() {
         @Override
         public void onAnimationEnd(Animator animation) {
-            isRotated = !isRotated;
-        }
+                isRotated = !isRotated;
+         }
     });
-}
+    }
+    private final ActivityResultLauncher<Intent> favoritesLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    // Handle the result data here
+                    Intent data = result.getData();
+                    if (data != null && data.hasExtra("selectedCurrency")) {
+                        String selectedCurrency = data.getStringExtra("selectedCurrency");
+                        addToFavorites(selectedCurrency);
+                    }
+                }
+            }
+    );
+
     private double getExchangeRate(String sourceCurrency, String targetCurrency) {
         Log.d("CurrencyDebug", "Source Currency: " + sourceCurrency);
         Log.d("CurrencyDebug", "Target Currency: " + targetCurrency);

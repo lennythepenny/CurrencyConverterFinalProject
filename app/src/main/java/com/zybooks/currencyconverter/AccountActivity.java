@@ -12,7 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 public class AccountActivity extends AppCompatActivity {
+    private ArrayList<String> favoritesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,9 @@ public class AccountActivity extends AppCompatActivity {
                             startActivity(new Intent(AccountActivity.this, MainActivity.class));
                             return true;
                         } else if (itemId == R.id.action_favorites) {
-                            startActivity(new Intent(AccountActivity.this, FavoritesActivity.class));
+                            Intent favoritesIntent = new Intent(AccountActivity.this, FavoritesActivity.class);
+                            favoritesIntent.putStringArrayListExtra("favoritesList", favoritesList);
+                            startActivity(favoritesIntent);
                             return true;
                         } else if (itemId == R.id.action_account_circle) {
                             //Do nothing we are in account activity
