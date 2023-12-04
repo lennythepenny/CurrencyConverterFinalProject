@@ -20,7 +20,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Locale;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.app.AlertDialog;
@@ -176,15 +179,6 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                 fadeOut.start();
             }
         });
-
-
-        swapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Swap current and final currencies
-                swapCurrencies(currencyOne, currencyTwo);
-            }
-        });
         swapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,19 +187,41 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             }
         });
     }
-
+    private String convertCountryCodeToFullName(String countryCode) {
+        switch (countryCode) {
+            case "USD":
+                return "United States Dollar";
+            case "EUR":
+                return "Euro";
+            case "JPY":
+                return "Japanese Yen";
+            case "GBP":
+                return "British Pound Sterling";
+            case "AUD":
+                return "Australian Dollar";
+            case "CAD":
+                return "Canadian Dollar";
+            case "CHF":
+                return "Swiss Franc";
+            case "CNY":
+                return "Chinese Yuan";
+            case "SEK":
+                return "Swedish Krona";
+            case "NZD":
+                return "New Zealand Dollar";
+            default:
+                return countryCode;
+        }
+    }
     private void addToFavorites(String selectedCurrency) {
         Log.d("CurrencyDebug", "Adding to favorites: " + selectedCurrency);
+        String fullName = convertCountryCodeToFullName(selectedCurrency);
         if (!favoritesList.contains(selectedCurrency)) {
             favoritesList.add(selectedCurrency);
-            // You can also update the UI or perform any other actions related to adding to favorites here
-            // Broadcast an intent with the updated favorites list
             Intent updateFavoritesIntent = new Intent("updateFavorites");
             updateFavoritesIntent.putStringArrayListExtra("favoritesList", favoritesList);
             sendBroadcast(updateFavoritesIntent);
         } else {
-            // Handle the case where the currency is already in favorites
-            // You can show a message or handle it in a way that fits your app logic
             Log.d("CurrencyDebug", "Currency is already in favorites: " + selectedCurrency);
         }
     }
@@ -220,40 +236,41 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         currencyOne.setSelection(positionCurrencyOne);
         currencyTwo.setSelection(positionCurrencyTwo);
     }
+private void convertCurrency() {
+    EditText amountEditText = findViewById(R.id.firstCurrency);
+    String amountString = amountEditText.getText().toString();
 
-    private double convertCurrency() {
-        EditText amountEditText = findViewById(R.id.firstCurrency);
-        String amountString = amountEditText.getText().toString();
+    if (amountString.isEmpty()) {
+        Toast.makeText(MainActivity.this, "Please enter the amount to convert", Toast.LENGTH_SHORT).show();
+    }
 
-        if (amountString.isEmpty()) {
-            Toast.makeText(MainActivity.this, "Please enter the amount to convert", Toast.LENGTH_SHORT).show();
-            return 0.0; // Return 0 if the amount is not entered
-        }
+    double amountToConvert = Double.parseDouble(amountString);
 
-        double amountToConvert = Double.parseDouble(amountString);
+    Spinner currencyOne = findViewById(R.id.currencyOne);
+    Spinner currencyTwo = findViewById(R.id.currencyTwo);
 
-        Spinner currencyOne = findViewById(R.id.currencyOne);
-        Spinner currencyTwo = findViewById(R.id.currencyTwo);
+    String sourceCurrency = currencyOne.getSelectedItem().toString();
+    String targetCurrency = currencyTwo.getSelectedItem().toString();
 
-        String sourceCurrency = "";
-        String targetCurrency = "";
-
-        if (currencyOne.getSelectedItem() != null) {
-            sourceCurrency = currencyOne.getSelectedItem().toString();
-        }
-
-        if (currencyTwo.getSelectedItem() != null) {
-            targetCurrency = currencyTwo.getSelectedItem().toString();
-        }
+    try {
+        Currency targetCurrencyInstance = Currency.getInstance(targetCurrency);
 
         double exchangeRate = getExchangeRate(sourceCurrency, targetCurrency);
 
         double result = amountToConvert * exchangeRate;
 
+        NumberFormat cf = NumberFormat.getCurrencyInstance();
+        cf.setCurrency(targetCurrencyInstance);  // Set currency based on the target currency
+        String formattedResult = cf.format(result);
+
         TextView resultTextView = findViewById(R.id.resultCurrency);
-        resultTextView.setText(String.format(Locale.getDefault(), "%.2f", result));
-        return result;
+        resultTextView.setText(formattedResult);
+    } catch (IllegalArgumentException e) {
+        Log.e("CurrencyDebug", "Invalid currency code - Source: " + sourceCurrency + ", Target: " + targetCurrency);
+        // Handle the case where either sourceCurrency or targetCurrency is not a valid currency code
     }
+}
+
     private void showClearConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to clear?")
@@ -338,186 +355,186 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
     private double getExchangeRate(String sourceCurrency, String targetCurrency) {
         Log.d("CurrencyDebug", "Source Currency: " + sourceCurrency);
         Log.d("CurrencyDebug", "Target Currency: " + targetCurrency);
-        switch (sourceCurrency + "_" + targetCurrency) {
-            case "United States Dollar (USD)_Euro (EUR)":
+        switch (sourceCurrency.trim() + "_" + targetCurrency.trim()) {
+            case "USD_EUR":
                 return 0.92;
-            case "United States Dollar (USD)_Japanese Yen (JPY)":
+            case "USD_JPY":
                 return 149.63;
-            case "United States Dollar (USD)_British Pound Sterling (GBP)":
+            case "USD_GBP":
                 return 0.85;
-            case "United States Dollar (USD)_Australian Dollar (AUD)":
+            case "USD_AUD":
                 return 1.54;
-            case "United States Dollar (USD)_Canadian Dollar (CAD)":
+            case "USD_CAD":
                 return 1.37;
-            case "United States Dollar (USD)_Swiss Franc (CHF)":
+            case "USD_CHF":
                 return 0.89;
-            case "United States Dollar (USD)_Chinese Yuan (CNY)":
+            case "USD_CNY":
                 return 7.21;
-            case "United States Dollar (USD)_Swedish Krona (SEK)":
+            case "USD_SEK":
                 return 10.54;
-            case "United States Dollar (USD)_New Zealand Dollar (NZD)":
+            case "USD_NZD":
                 return 1.67;
-            case "Euro (EUR)_United States Dollar (USD)":
+            case "EUR_USD":
                 return 1.09;
-            case "Euro (EUR)_Japanese Yen (JPY)":
+            case "EUR_JPY":
                 return 163.38;
-            case"Euro (EUR)_British Pound Sterling (GBP)":
+            case"EUR_GBP":
                 return 0.88;
-            case "Euro (EUR)_Australian Dollar (AUD)":
+            case "EUR_AUD":
                 return 1.68;
-            case "Euro (EUR)_Canadian Dollar (CAD)":
+            case "EUR_CAD":
                 return 1.50;
-            case "Euro (EUR)_Swiss Franc (CHF)":
+            case "EUR_CHF":
                 return 0.97;
-            case "Euro (EUR)_Chinese Yuan (CNY)":
+            case "EUR_CNY":
                 return 7.86;
-            case "Euro (EUR)_Swedish Krona (SEK)":
+            case "EUR_SEK":
                 return 11.48;
-            case "Euro (EUR)_New Zealand Dollar (NZD)":
+            case "EUR_NZD":
                 return 1.82;
-            case "Japanese Yen (JPY)_United States Dollar (USD)":
+            case "JPY_USD":
                 return 0.0067;
-            case "Japanese Yen (JPY)_Euro (EUR)":
+            case "JPY_EUR":
                 return 0.0061;
-            case"Japanese Yen (JPY)_British Pound Sterling (GBP)":
+            case"JPY_GBP":
                 return 0.0054;
-            case "Japanese Yen (JPY)_Australian Dollar (AUD)":
+            case "JPY_AUD":
                 return 0.010;
-            case "Japanese Yen (JPY)_Canadian Dollar (CAD)":
+            case "JPY_CAD":
                 return 0.0092;
-            case "Japanese Yen (JPY)_Swiss Franc (CHF)":
+            case "JPY_CHF":
                 return 0.0059;
-            case "Japanese Yen (JPY)_Chinese Yuan (CNY)":
+            case "JPY_CNY":
                 return 0.048;
-            case "Japanese Yen (JPY)_Swedish Krona (SEK)":
+            case "JPY_SEK":
                 return 0.070;
-            case "Japanese Yen (JPY)_New Zealand Dollar (NZD)":
+            case "JPY_NZD":
                 return 0.011;
-            case "British Pound Sterling (GBP)_United States Dollar (USD)":
+            case "GBP_USD":
                 return 1.24;
-            case "British Pound Sterling (GBP)_Euro (EUR)":
+            case "GBP_EUR":
                 return 1.14;
-            case "British Pound Sterling (GBP)_Japanese Yen (JPY)":
+            case "GBP_JPY":
                 return 186.02;
-            case "British Pound Sterling (GBP)_Australian Dollar (AUD)":
+            case "GBP_AUD":
                 return 1.91;
-            case "British Pound Sterling (GBP)_Canadian Dollar (CAD)":
+            case "GBP_CAD":
                 return 1.71;
-            case "British Pound Sterling (GBP)_Swiss Franc (CHF)":
+            case "GBP_CHF":
                 return 1.10;
-            case "British Pound Sterling (GBP)_Chinese Yuan (CNY)":
+            case "GBP_CNY":
                 return 8.98;
-            case "British Pound Sterling (GBP)_Swedish Krona (SEK)":
+            case "GBP_SEK":
                 return 13.12;
-            case "British Pound Sterling (GBP)_New Zealand Dollar (NZD)":
+            case "GBP_NZD":
                 return 2.08;
-            case "Australian Dollar (AUD)_United States Dollar (USD)":
+            case "AUD_USD":
                 return 0.65;
-            case "Australian Dollar (AUD)_Euro (EUR)":
+            case "AUD_EUR":
                 return 0.60;
-            case "Australian Dollar (AUD)_Japanese Yen (JPY)":
+            case "AUD_JPY":
                 return 97.54;
-            case "Australian Dollar (AUD)_British Pound Sterling (GBP)":
+            case "AUD_GBP":
                 return 0.52;
-            case "Australian Dollar (AUD)_Canadian Dollar (CAD)":
+            case "AUD_CAD":
                 return 0.89;
-            case "Australian Dollar (AUD)_Swiss Franc (CHF)":
+            case "AUD_CHF":
                 return 0.58;
-            case "Australian Dollar (AUD)_Chinese Yuan (CNY)":
+            case "AUD_CNY":
                 return 4.69;
-            case "Australian Dollar (AUD)_Swedish Krona (SEK)":
+            case "AUD_SEK":
                 return 6.86;
-            case "Australian Dollar (AUD)_New Zealand Dollar (NZD)":
+            case "AUD_NZD":
                 return 1.09;
-            case "Canadian Dollar (CAD)_United States Dollar (USD)":
+            case "CAD_USD":
                 return 0.73;
-            case "Canadian Dollar (CAD)_Euro (EUR)":
+            case "CAD_EUR":
                 return 0.67;
-            case "Canadian Dollar (CAD)_Japanese Yen (JPY)":
+            case "CAD_JPY":
                 return 109.25;
-            case "Canadian Dollar (CAD)_British Pound Sterling (GBP)":
+            case "CAD_GBP":
                 return 0.59;
-            case "Canadian Dollar (CAD)_Australian Dollar (AUD)":
+            case "CAD_AUD":
                 return 1.12;
-            case "Canadian Dollar (CAD)_Swiss Franc (CHF)":
+            case "CAD_CHF":
                 return 0.65;
-            case "Canadian Dollar (CAD)_Chinese Yuan (CNY)":
+            case "CAD_CNY":
                 return 5.25;
-            case "Canadian Dollar (CAD)_Swedish Krona (SEK)":
+            case "CAD_SEK":
                 return 7.68;
-            case "Canadian Dollar (CAD)_New Zealand Dollar (NZD)":
+            case "CAD_NZD":
                 return 1.21;
-            case "Swiss Franc (CHF)_United States Dollar (USD)":
+            case "CHF_USD":
                 return 1.13;
-            case "Swiss Franc (CHF)_Euro (EUR)":
+            case "CHF_EUR":
                 return 1.04;
-            case "Swiss Franc (CHF)_Japanese Yen (JPY)":
+            case "CHF_JPY":
                 return 169.16;
-            case "Swiss Franc (CHF)_British Pound Sterling (GBP)":
+            case "CHF_GBP":
                 return 0.91;
-            case "Swiss Franc (CHF)_Australian Dollar (AUD)":
+            case "CHF_AUD":
                 return 1.73;
-            case "Swiss Franc (CHF)_Canadian Dollar (CAD)":
+            case "CHF_CAD":
                 return 1.55;
-            case "Swiss Franc (CHF)_Chinese Yuan (CNY)":
+            case "CHF_CNY":
                 return 8.14;
-            case "Swiss Franc (CHF)_Swedish Krona (SEK)":
+            case "CHF_SEK":
                 return 11.88;
-            case "Swiss Franc (CHF)_New Zealand Dollar (NZD)":
+            case "CHF_NZD":
                 return 1.88;
-            case "Chinese Yuan (CNY)_United States Dollar (USD)":
+            case "CNY_USD":
                 return 0.14;
-            case "Chinese Yuan (CNY)_Euro (EUR)":
+            case "CNY_EUR":
                 return 0.13;
-            case "Chinese Yuan (CNY)_Japanese Yen (JPY)":
+            case "CNY_JPY":
                 return 20.77;
-            case "Chinese Yuan (CNY)_British Pound Sterling (GBP)":
+            case "CNY_GBP":
                 return 0.11;
-            case "Chinese Yuan (CNY)_Australian Dollar (AUD)":
+            case "CNY_AUD":
                 return 0.22;
-            case "Chinese Yuan (CNY)_Canadian Dollar (CAD)":
+            case "CNY_CAD":
                 return 0.20;
-            case "Chinese Yuan (CNY)_Swiss Franc (CHF)":
+            case "CNY_CHF":
                 return 0.12;
-            case "Chinese Yuan (CNY)_Swedish Krona (SEK)":
+            case "CNY_SEK":
                 return 1.46;
-            case "Chinese Yuan (CNY)_New Zealand Dollar (NZD)":
+            case "CNY_NZD":
                 return 0.23;
-            case "Swedish Krona (SEK)_United States Dollar (USD)":
+            case "SEK_USD":
                 return 0.095;
-            case "Swedish Krona (SEK)_Euro (EUR)":
+            case "SEK_EUR":
                 return 0.087;
-            case "Swedish Krona (SEK)_Japanese Yen (JPY)":
+            case "SEK_JPY":
                 return 14.23;
-            case "Swedish Krona (SEK)_British Pound Sterling (GBP)":
+            case "SEK_GBP":
                 return 0.076;
-            case "Swedish Krona (SEK)_Australian Dollar (AUD)":
+            case "SEK_AUD":
                 return 0.15;
-            case "Swedish Krona (SEK)_Canadian Dollar (CAD)":
+            case "SEK_CAD":
                 return 0.130;
-            case "Swedish Krona (SEK)_Swiss Franc (CHF)":
+            case "SEK_CHF":
                 return 0.084;
-            case "Swedish Krona (SEK)_Chinese Yuan (CNY)":
+            case "SEK_CNY":
                 return 0.68;
-            case "Swedish Krona (SEK)_New Zealand Dollar (NZD)":
+            case "SEK_NZD":
                 return 0.16;
-            case "New Zealand Dollar (NZD)_United States Dollar (USD)":
+            case "NZD_USD":
                 return 0.60;
-            case "New Zealand Dollar (NZD)_Euro (EUR)":
+            case "NZD_EUR":
                 return 0.55;
-            case "New Zealand Dollar (NZD)_Japanese Yen (JPY)":
+            case "NZD_JPY":
                 return 89.88;
-            case "New Zealand Dollar (NZD)_British Pound Sterling (GBP)":
+            case "NZD_GBP":
                 return 0.48;
-            case "New Zealand Dollar (NZD)_Australian Dollar (AUD)":
+            case "NZD_AUD":
                 return 0.920;
-            case "New Zealand Dollar (NZD)_Canadian Dollar (CAD)":
+            case "NZD_CAD":
                 return 0.82;
-            case "New Zealand Dollar (NZD)_Swiss Franc (CHF)":
+            case "NZD_CHF":
                 return 0.53;
-            case "New Zealand Dollar (NZD)_Chinese Yuan (CNY)":
+            case "NZD_CNY":
                 return 4.33;
-            case "New Zealand Dollar (NZD)_Swedish Krona (SEK)":
+            case "NZD_SEK":
                 return 6.32;
             default:
                 return 1.0;

@@ -4,15 +4,15 @@
     <string-array name="language_entries" />
     <string-array name="language_values" />
     <string-array name="currencies_array">
-        <item>United States Dollar (USD)</item>
-        <item>Euro (EUR)</item>
-        <item>Japanese Yen (JPY)</item>
-        <item>British Pound Sterling (GBP)</item>
-        <item>Australian Dollar (AUD)</item>
-        <item>Canadian Dollar (CAD)</item>
-        <item>Swiss Franc (CHF)</item>
-        <item>Chinese Yuan (CNY)</item>
-        <item>Swedish Krona (SEK)</item>
-        <item>New Zealand Dollar (NZD)</item>
+        <item>USD</item>
+        <item>EUR</item>
+        <item>JPY</item>
+        <item>GBP</item>
+        <item>AUD</item>
+        <item>CAD</item>
+        <item>CHF</item>
+        <item>CNY</item>
+        <item>SEK</item>
+        <item>NZD</item>
     </string-array>
 </resources>
