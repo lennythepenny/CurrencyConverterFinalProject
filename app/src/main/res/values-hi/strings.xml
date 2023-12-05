@@ -1,4 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hindi" />
+    <string name="app_name">मुद्रा परिवर्तक</string>
+    <string name="enter_current_currency">वर्तमान मुद्रा दर्ज करें</string>
+    <string name="final_currency_will_be_displayed_here">यहाँ अंतिम मुद्रा दिखाई जाएगी</string>
+    <string name="calculate">हिसाब लगाएं</string>
+    <string name="clear">साफ करें</string>
+    <string name="favorites">पसंदीदा</string>
+    <string name="swap">बदलें</string>
+    <string name="start_converting">परिवर्तन शुरू करें</string>
+    <string name="convert">परिवर्तित करें</string>
+    <string name="clear2">साफ करें</string>
+    <string name="select_currency">मुद्रा चुनें</string>
+    <string name="currency_1">मुद्रा 1</string>
+    <string name="select_currency_to_exchange">विनिमय के लिए मुद्रा चुनें</string>
+    <string name="currency_2">मुद्रा 2</string>
+    <string name="converted_value">परिवर्तित मूल्य</string>
+    <string name="result">परिणाम</string>
+    <string name="second_currency">दूसरी मुद्रा</string>
+    <string name="first_currency">पहली मुद्रा</string>
+    <string name="home">होम</string>
+    <string name="favorite">पसंदीदा</string>
+    <string name="account">खाता</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="name_john_doe">नाम: जॉन डो</string>
+    <string name="email_john_doe_example_com">ईमेल: john.doe@example.com</string>
+    <string name="account_type_premium">खाता प्रकार: प्रीमियम</string>
+    <string name="select_default_currency" translatable="false" />
+    <string name="dark_mode">डार्क मोड</string>
+    <string name="decimal_places">दशमलव स्थान</string>
+    <string name="language" translatable="false">परीक्षण</string>
 </resources>

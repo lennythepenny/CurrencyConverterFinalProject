@@ -28,6 +28,4 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="decimal_places">Decimal Places</string>
     <string name="language" translatable="false">Testing</string>
-    <string name="hindi" />
-    <string name="english" />
 </resources>

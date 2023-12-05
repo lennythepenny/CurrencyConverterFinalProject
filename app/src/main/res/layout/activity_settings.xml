@@ -83,7 +83,7 @@
                 android:textColor="#ffffff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/hindi"/>
+                android:text="Hindi"/>
 
             <!--button view for english language-->
             <Button
@@ -93,7 +93,7 @@
                 android:textColor="#ffffff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/english"/>
+                android:text="English"/>
 
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
