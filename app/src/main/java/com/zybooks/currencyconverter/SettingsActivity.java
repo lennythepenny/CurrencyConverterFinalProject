@@ -41,7 +41,6 @@ public class SettingsActivity extends AppCompatActivity {
         messageView = (TextView) findViewById(R.id.textView);
         btnHindi = findViewById(R.id.btnHindi);
         btnEnglish = findViewById(R.id.btnEnglish);
-
         // Switch for dark mode using SwitchCompat
         SwitchCompat darkModeSwitch = findViewById(R.id.darkModeSwitch);
         darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -96,5 +95,6 @@ public class SettingsActivity extends AppCompatActivity {
                         return false;
                     }
                 });
+
     }
 }
