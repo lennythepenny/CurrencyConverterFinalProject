@@ -39,7 +39,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="170dp"
+            android:layout_height="370dp"
             android:orientation="vertical"
             android:background="@color/light_green">
 
@@ -75,6 +75,25 @@
                 android:text="@string/dark_mode"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
+            <!--button view for hindi language-->
+            <Button
+                android:id="@+id/btnHindi"
+                android:layout_margin="16dp"
+                android:background="@color/colorPrimary"
+                android:textColor="#ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hindi"/>
+
+            <!--button view for english language-->
+            <Button
+                android:id="@+id/btnEnglish"
+                android:layout_margin="16dp"
+                android:background="@color/colorPrimary"
+                android:textColor="#ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/english"/>
 
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>

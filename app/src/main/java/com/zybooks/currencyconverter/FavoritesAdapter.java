@@ -1,5 +1,6 @@
 package com.zybooks.currencyconverter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +29,15 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        Log.d("CurrencyDebug", "ViewHolder created");
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String currency = favoritesList.get(position);
         holder.favoriteTextView.setText(favoritesList.get(position));
+        Log.d("CurrencyDebug", "Currency at position " + position + ": " + currency);
     }
 
     @Override
@@ -50,6 +54,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             favoriteTextView = itemView.findViewById(android.R.id.text1);
+            Log.d("CurrencyDebug", "ViewHolder constructor - TextView reference: " + favoriteTextView);
         }
     }
 }

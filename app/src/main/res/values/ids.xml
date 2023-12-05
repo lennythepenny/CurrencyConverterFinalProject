@@ -6,4 +6,5 @@
     <item name="currentCurrencySpinner" type="id" />
     <item name="finalCurrencySpinner" type="id" />
     <item name="toolbar" type="id" />
+    <item name="textView" type="id" />
 </resources>

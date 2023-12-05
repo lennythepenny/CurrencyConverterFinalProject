@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">محول العملات | تغيير لغة التطبيق</string>
+    <string name="enter_current_currency">أدخل العملة الحالية</string>
+    <string name="final_currency_will_be_displayed_here">سيتم عرض العملة النهائية هنا</string>
+    <string name="calculate">احسب</string>
+    <string name="clear">واضح</string>
+    <string name="favorites">المفضلة</string>
+    <string name="swap">تبديل</string>
+    <string name="start_converting">ابدأ بالتحويل</string>
+    <string name="convert">يتحول</string>
+    <string name="clear2">واضح</string>
+    <string name="select_currency">اختر العملة</string>
+    <string name="currency_1">العملة 1</string>
+    <string name="select_currency_to_exchange">حدد العملة المراد صرفها</string>
+    <string name="currency_2">العملة 2</string>
+    <string name="converted_value">القيمة المحولة</string>
+    <string name="result">نتيجة</string>
+    <string name="second_currency">العملة الثانية</string>
+    <string name="first_currency">العملة الأولى</string>
+    <string name="home">بيت</string>
+    <string name="favorite">المفضلة</string>
+    <string name="account">حساب</string>
+    <string name="settings">إعدادات</string>
+    <string name="name_john_doe">الاسم: جون دو</string>
+    <string name="email_john_doe_example_com">البريد الإلكتروني: john.doe\@example.com</string>
+    <string name="account_type_premium">نوع الحساب: بريميوم</string>
+    <string name="select_default_currency" translatable="false" />
+    <string name="dark_mode">الوضع المظلم</string>
+    <string name="decimal_places">منازل عشرية</string>
+</resources>

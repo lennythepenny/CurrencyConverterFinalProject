@@ -27,7 +27,11 @@ public class FavoritesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorites);
 
         favoritesSet = loadFavorites();
-        favoritesList = new ArrayList<>();
+        if (favoritesSet == null) {
+            favoritesSet = new HashSet<>();
+        }
+//        favoritesList = new ArrayList<>();
+        favoritesList = new ArrayList<>(favoritesSet);
         favoritesAdapter = new FavoritesAdapter(favoritesList);
         favoritesRecyclerView = findViewById(R.id.favoritesRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -75,26 +79,59 @@ public class FavoritesActivity extends AppCompatActivity {
                     }
                 });
     }
+    private String convertCountryCodeToFullName(String countryCode) {
+        switch (countryCode) {
+            case "USD":
+                return "United States Dollar";
+            case "EUR":
+                return "Euro";
+            case "JPY":
+                return "Japanese Yen";
+            case "GBP":
+                return "British Pound Sterling";
+            case "AUD":
+                return "Australian Dollar";
+            case "CAD":
+                return "Canadian Dollar";
+            case "CHF":
+                return "Swiss Franc";
+            case "CNY":
+                return "Chinese Yuan";
+            case "SEK":
+                return "Swedish Krona";
+            case "NZD":
+                return "New Zealand Dollar";
+            default:
+                return countryCode;
+        }
+    }
     public void addToFavorites(String selectedCurrency) {
-        Log.d("CurrencyDebug", "Adding to favorites in FavoritesActivity: " + selectedCurrency);
-        favoritesSet.add(selectedCurrency);
-        saveFavorites();
+        String fullName = convertCountryCodeToFullName(selectedCurrency);
+        favoritesSet.add(fullName);
         favoritesAdapter.updateData(new ArrayList<>(favoritesSet));
+        saveFavorites();
     }
     private void removeFromFavorites(int position) {
         favoritesList.remove(position);
         favoritesAdapter.notifyDataSetChanged();
-        saveFavorites();
+        //saveFavorites();
     }
     private void saveFavorites() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
+        editor.remove("favoritesSet").apply();
         editor.putStringSet("favoritesSet", favoritesSet);
         editor.apply();
     }
     private Set<String> loadFavorites() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        return settings.getStringSet("favoritesSet", new HashSet<>());
+        Set<String> loadedFavorites = settings.getStringSet("favoritesSet", new HashSet<>());
+
+        Log.d("CurrencyDebug", "Loaded favorites from SharedPreferences: " + loadedFavorites.toString());
+
+        return loadedFavorites;
+//        Log.d("CurrencyDebug", "Loaded favorites from SharedPreferences: " + loadedFavorites.toString());
+//        return settings.getStringSet("favoritesSet", new HashSet<>());
     }
 
 }

@@ -30,7 +30,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 /**
- * Final currency symbol format
  * Fix favorites navigation bar when you click it from another activity
  * Add Multiple Languages
  */
@@ -44,6 +43,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         favoritesList = new ArrayList<>();
         Spinner currencyOne = findViewById(R.id.currencyOne);
         Spinner currencyTwo = findViewById(R.id.currencyTwo);
@@ -159,7 +159,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                             favoriteBorder.setImageResource(R.drawable.favorite_filled);
                             String selectedCurrency = currencyOne.getSelectedItem().toString();
                             addToFavorites(selectedCurrency);
-                            Log.d("CurrencyDebug", "Selected Currency in MainActivity if (isFavorite): " + selectedCurrency);
+                            Log.d("CurrencyDebug", "Sending to FavoritesActivity: " + favoritesList.toString());
 
                             // Pass the selected currency to FavoritesActivity
                             Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
@@ -179,6 +179,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                 fadeOut.start();
             }
         });
+
         swapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
