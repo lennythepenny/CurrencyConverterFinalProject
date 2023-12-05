@@ -31,7 +31,6 @@ import android.content.DialogInterface;
 
 /**
  * Fix favorites navigation bar when you click it from another activity
- * Add Multiple Languages
  */
 
 public class MainActivity<MenuItem> extends AppCompatActivity {
@@ -126,7 +125,6 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         convertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Convert currency and display result
                 convertCurrency();
             }
         });
@@ -134,7 +132,6 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         clearButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Clear input fields and result
                 showClearConfirmationDialog();
             }
         });
@@ -159,7 +156,6 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                             favoriteBorder.setImageResource(R.drawable.favorite_filled);
                             String selectedCurrency = currencyOne.getSelectedItem().toString();
                             addToFavorites(selectedCurrency);
-                            Log.d("CurrencyDebug", "Sending to FavoritesActivity: " + favoritesList.toString());
 
                             // Pass the selected currency to FavoritesActivity
                             Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
@@ -237,40 +233,40 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         currencyOne.setSelection(positionCurrencyOne);
         currencyTwo.setSelection(positionCurrencyTwo);
     }
-private void convertCurrency() {
-    EditText amountEditText = findViewById(R.id.firstCurrency);
-    String amountString = amountEditText.getText().toString();
+    private void convertCurrency() {
+        EditText amountEditText = findViewById(R.id.firstCurrency);
+        String amountString = amountEditText.getText().toString();
 
-    if (amountString.isEmpty()) {
-        Toast.makeText(MainActivity.this, "Please enter the amount to convert", Toast.LENGTH_SHORT).show();
+        if (amountString.isEmpty()) {
+            Toast.makeText(MainActivity.this, "Please enter the amount to convert", Toast.LENGTH_SHORT).show();
+        }
+
+        double amountToConvert = Double.parseDouble(amountString);
+
+        Spinner currencyOne = findViewById(R.id.currencyOne);
+        Spinner currencyTwo = findViewById(R.id.currencyTwo);
+
+        String sourceCurrency = currencyOne.getSelectedItem().toString();
+        String targetCurrency = currencyTwo.getSelectedItem().toString();
+
+        try {
+            Currency targetCurrencyInstance = Currency.getInstance(targetCurrency);
+
+            double exchangeRate = getExchangeRate(sourceCurrency, targetCurrency);
+
+            double result = amountToConvert * exchangeRate;
+
+            NumberFormat cf = NumberFormat.getCurrencyInstance();
+            cf.setCurrency(targetCurrencyInstance);  // Set currency based on the target currency
+            String formattedResult = cf.format(result);
+
+            TextView resultTextView = findViewById(R.id.resultCurrency);
+            resultTextView.setText(formattedResult);
+        } catch (IllegalArgumentException e) {
+            Log.e("CurrencyDebug", "Invalid currency code - Source: " + sourceCurrency + ", Target: " + targetCurrency);
+            // Handle the case where either sourceCurrency or targetCurrency is not a valid currency code
+        }
     }
-
-    double amountToConvert = Double.parseDouble(amountString);
-
-    Spinner currencyOne = findViewById(R.id.currencyOne);
-    Spinner currencyTwo = findViewById(R.id.currencyTwo);
-
-    String sourceCurrency = currencyOne.getSelectedItem().toString();
-    String targetCurrency = currencyTwo.getSelectedItem().toString();
-
-    try {
-        Currency targetCurrencyInstance = Currency.getInstance(targetCurrency);
-
-        double exchangeRate = getExchangeRate(sourceCurrency, targetCurrency);
-
-        double result = amountToConvert * exchangeRate;
-
-        NumberFormat cf = NumberFormat.getCurrencyInstance();
-        cf.setCurrency(targetCurrencyInstance);  // Set currency based on the target currency
-        String formattedResult = cf.format(result);
-
-        TextView resultTextView = findViewById(R.id.resultCurrency);
-        resultTextView.setText(formattedResult);
-    } catch (IllegalArgumentException e) {
-        Log.e("CurrencyDebug", "Invalid currency code - Source: " + sourceCurrency + ", Target: " + targetCurrency);
-        // Handle the case where either sourceCurrency or targetCurrency is not a valid currency code
-    }
-}
 
     private void showClearConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -333,11 +329,11 @@ private void convertCurrency() {
 
         // Toggle the isRotated value after the animation completes
         rotateAnimation.addListener(new AnimatorListenerAdapter() {
-        @Override
-        public void onAnimationEnd(Animator animation) {
+            @Override
+            public void onAnimationEnd(Animator animation) {
                 isRotated = !isRotated;
-         }
-    });
+            }
+        });
     }
     private final ActivityResultLauncher<Intent> favoritesLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),

@@ -13,7 +13,9 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-
+/*
+* Add functionality for the account section, maybe a dialog box that pops up when you click on the account
+* */
 public class AccountActivity extends AppCompatActivity {
     private ArrayList<String> favoritesList;
 

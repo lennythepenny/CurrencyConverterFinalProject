@@ -27,32 +27,33 @@ public class FavoritesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorites);
 
         favoritesSet = loadFavorites();
-        if (favoritesSet == null) {
-            favoritesSet = new HashSet<>();
-        }
-//        favoritesList = new ArrayList<>();
         favoritesList = new ArrayList<>(favoritesSet);
         favoritesAdapter = new FavoritesAdapter(favoritesList);
         favoritesRecyclerView = findViewById(R.id.favoritesRecyclerView);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         favoritesRecyclerView.setLayoutManager(layoutManager);
         favoritesRecyclerView.setAdapter(favoritesAdapter);
 
+        favoritesAdapter.setOnItemClickListener(new FavoritesAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String selectedCurrency) {
+                // Show FunFactDialog when an item is clicked
+                FunFactDialog.show(FavoritesActivity.this, selectedCurrency);
+            }
+        });
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra("selectedCurrency")) {
-                // If data is passed through intent, add it to favorites
                 String selectedCurrency = intent.getStringExtra("selectedCurrency");
                 addToFavorites(selectedCurrency);
             } else if (intent.hasExtra("favoritesList")) {
                 // If the activity is launched through bottom navigation
                 // and has a list of favorites, update the RecyclerView
                 ArrayList<String> updatedFavoritesList = intent.getStringArrayListExtra("favoritesList");
-                if (updatedFavoritesList != null) {
                     favoritesList.clear();
                     favoritesList.addAll(updatedFavoritesList);
                     favoritesAdapter.updateData(favoritesList);
-                }
             }
         }
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavBar);
@@ -109,7 +110,7 @@ public class FavoritesActivity extends AppCompatActivity {
         String fullName = convertCountryCodeToFullName(selectedCurrency);
         favoritesSet.add(fullName);
         favoritesAdapter.updateData(new ArrayList<>(favoritesSet));
-        saveFavorites();
+        //saveFavorites();
     }
     private void removeFromFavorites(int position) {
         favoritesList.remove(position);
@@ -125,13 +126,7 @@ public class FavoritesActivity extends AppCompatActivity {
     }
     private Set<String> loadFavorites() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        Set<String> loadedFavorites = settings.getStringSet("favoritesSet", new HashSet<>());
-
-        Log.d("CurrencyDebug", "Loaded favorites from SharedPreferences: " + loadedFavorites.toString());
-
-        return loadedFavorites;
-//        Log.d("CurrencyDebug", "Loaded favorites from SharedPreferences: " + loadedFavorites.toString());
-//        return settings.getStringSet("favoritesSet", new HashSet<>());
+        return settings.getStringSet("favoritesSet", new HashSet<>());
     }
 
 }

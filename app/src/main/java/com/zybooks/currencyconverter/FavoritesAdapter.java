@@ -29,7 +29,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
-        Log.d("CurrencyDebug", "ViewHolder created");
         return new ViewHolder(view);
     }
 
@@ -37,7 +36,19 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String currency = favoritesList.get(position);
         holder.favoriteTextView.setText(favoritesList.get(position));
-        Log.d("CurrencyDebug", "Currency at position " + position + ": " + currency);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Check if the listener is set
+                if (onItemClickListener != null) {
+                    int adapterPosition = holder.getAdapterPosition();
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        String selectedCurrency = favoritesList.get(adapterPosition);
+                        onItemClickListener.onItemClick(selectedCurrency);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -57,5 +68,5 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             Log.d("CurrencyDebug", "ViewHolder constructor - TextView reference: " + favoriteTextView);
         }
     }
-}
 
+}
