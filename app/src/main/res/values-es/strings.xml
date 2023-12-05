@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Convertidor de divisas | Cambiar idioma de la aplicación</string>
+    <string name="enter_current_currency">Introduce la moneda actual</string>
+    <string name="final_currency_will_be_displayed_here">La moneda final se mostrará aquí</string>
+    <string name="calculate">Calcular</string>
+    <string name="clear">Claro</string>
+    <string name="favorites">Favoritos</string>
+    <string name="swap">Intercambio</string>
+    <string name="start_converting">Comience a convertir</string>
+    <string name="convert">Convertir</string>
+    <string name="clear2">Claro</string>
+    <string name="select_currency">Seleccione el tipo de moneda</string>
+    <string name="currency_1">Moneda 1</string>
+    <string name="select_currency_to_exchange">Seleccione la moneda para cambiar</string>
+    <string name="currency_2">Moneda 2</string>
+    <string name="converted_value">Valor convertido</string>
+    <string name="result">Resultado</string>
+    <string name="second_currency">Segunda moneda</string>
+    <string name="first_currency">Primera moneda</string>
+    <string name="home">Hogar</string>
+    <string name="favorite">Favoritos</string>
+    <string name="account">Cuenta</string>
+    <string name="settings">Ajustes</string>
+    <string name="name_john_doe">Nombre: John Doe</string>
+    <string name="email_john_doe_example_com">Correo electrónico: john.doe\@example.com</string>
+    <string name="account_type_premium">Tipo de cuenta: Premium</string>
+    <string name="select_default_currency" translatable="false" />
+    <string name="dark_mode">Dark Mode</string>
+    <string name="decimal_places">Decimal Places</string>
+</resources>

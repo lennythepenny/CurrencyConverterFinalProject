@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Konverter mata uang | Ganti Basa Aplikasi</string>
+    <string name="enter_current_currency">Ketik mata uang saiki</string>
+    <string name="final_currency_will_be_displayed_here">Mata uang pungkasan bakal ditampilake ing kene</string>
+    <string name="calculate">Ngitung</string>
+    <string name="clear">Cetha</string>
+    <string name="favorites">Favorit</string>
+    <string name="swap">Ngganti</string>
+    <string name="start_converting">Miwiti Ngonversi</string>
+    <string name="convert">Ngonversi</string>
+    <string name="clear2">Cetha</string>
+    <string name="select_currency">Pilih Currency</string>
+    <string name="currency_1">Mata uang 1</string>
+    <string name="select_currency_to_exchange">Pilih Currency to Exchange</string>
+    <string name="currency_2">Mata uang 2</string>
+    <string name="converted_value">Nilai sing diowahi</string>
+    <string name="result">asil</string>
+    <string name="second_currency">Mata uang kapindho</string>
+    <string name="first_currency">Mata uang pisanan</string>
+    <string name="home">Ngarep</string>
+    <string name="favorite">Favorit</string>
+    <string name="account">Akun</string>
+    <string name="settings">Setelan</string>
+    <string name="name_john_doe">Jeneng: John Doe</string>
+    <string name="email_john_doe_example_com">Email: john.doe\@example.com</string>
+    <string name="account_type_premium">Tipe Akun: Premium</string>
+    <string name="select_default_currency" translatable="false" />
+    <string name="dark_mode">Mode peteng</string>
+    <string name="decimal_places">Panggonan Decimal</string>
+</resources>

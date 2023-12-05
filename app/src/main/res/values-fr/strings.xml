@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Convertisseur de devises | Changer la langue de l\'application</string>
+    <string name="enter_current_currency">Entrez la devise actuelle</string>
+    <string name="final_currency_will_be_displayed_here">La devise finale sera affichée ici</string>
+    <string name="calculate">Calculer</string>
+    <string name="clear">Clair</string>
+    <string name="favorites">Favoris</string>
+    <string name="swap">Échanger</string>
+    <string name="start_converting">Commencer la conversion</string>
+    <string name="convert">Convertir</string>
+    <string name="clear2">Clair</string>
+    <string name="select_currency">Sélectionnez la devise</string>
+    <string name="currency_1">Devise 1</string>
+    <string name="select_currency_to_exchange">Sélectionnez la devise à échanger</string>
+    <string name="currency_2">Devise 2</string>
+    <string name="converted_value">Valeur convertie</string>
+    <string name="result">Résultat</string>
+    <string name="second_currency">Deuxième devise</string>
+    <string name="first_currency">Première devise</string>
+    <string name="home">Maison</string>
+    <string name="favorite">Favoris</string>
+    <string name="account">Compte</string>
+    <string name="settings">Paramètres</string>
+    <string name="name_john_doe">Nom : John Doe</string>
+    <string name="email_john_doe_example_com"><![CDATA[E-mail : john.doe\@example.com]]></string>
+    <string name="account_type_premium"><![CDATA[Type de compte : Premium]]></string>
+    <string name="select_default_currency" translatable="false" />
+    <string name="dark_mode">Mode sombre</string>
+    <string name="decimal_places">Décimales</string>
+</resources>

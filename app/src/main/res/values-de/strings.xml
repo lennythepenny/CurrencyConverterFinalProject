@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Währungsrechner | App-Sprache ändern</string>
+    <string name="enter_current_currency">Geben Sie die aktuelle Währung ein</string>
+    <string name="final_currency_will_be_displayed_here">Die endgültige Währung wird hier angezeigt</string>
+    <string name="calculate">Berechnung</string>
+    <string name="clear">Klar</string>
+    <string name="favorites">Favoriten</string>
+    <string name="swap">Tauschen</string>
+    <string name="start_converting">Beginnen Sie mit der Konvertierung</string>
+    <string name="convert">Konvertieren</string>
+    <string name="clear2">Klar</string>
+    <string name="select_currency">Währung wählen</string>
+    <string name="currency_1">Währung 1</string>
+    <string name="select_currency_to_exchange">Wählen Sie die umzutauschende Währung aus</string>
+    <string name="currency_2">Währung 2</string>
+    <string name="converted_value">Umgerechneter Wert</string>
+    <string name="result">Ergebnis</string>
+    <string name="second_currency">Zweite Währung</string>
+    <string name="first_currency">Erste Währung</string>
+    <string name="home">Zuhause</string>
+    <string name="favorite">Favoriten</string>
+    <string name="account">Konto</string>
+    <string name="settings">Einstellungen</string>
+    <string name="name_john_doe">Name: John Doe</string>
+    <string name="email_john_doe_example_com">E-Mail: john.doe\@example.com</string>
+    <string name="account_type_premium">Kontotyp: Premium</string>
+    <string name="select_default_currency" translatable="false" />
+    <string name="dark_mode">Dunkler Modus</string>
+    <string name="decimal_places">Nachkommastellen</string>
+</resources>

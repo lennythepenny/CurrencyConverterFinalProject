@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">通貨換算器</string>
+    <string name="app_name">Currency Converter</string>
     <string name="enter_current_currency">通貨を入力</string>
     <string name="final_currency_will_be_displayed_here">ここに表示される最終通貨</string>
     <string name="calculate">計算する</string>

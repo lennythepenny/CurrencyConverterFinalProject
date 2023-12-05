@@ -41,6 +41,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         favoritesList = new ArrayList<>();
         Spinner currencyOne = findViewById(R.id.currencyOne);
         Spinner currencyTwo = findViewById(R.id.currencyTwo);
@@ -193,6 +194,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             }
         });
     }
+
 
     private void addToFavorites(String selectedCurrency) {
         Log.d("CurrencyDebug", "Adding to favorites: " + selectedCurrency);
