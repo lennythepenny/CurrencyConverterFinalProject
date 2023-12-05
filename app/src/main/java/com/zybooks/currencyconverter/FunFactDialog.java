@@ -2,7 +2,9 @@ package com.zybooks.currencyconverter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-
+/*
+* Fun Fact Implemented!
+* */
 public class FunFactDialog {
 
     public static void show(Context context, String currency) {
