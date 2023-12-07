@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
-    private ArrayList<String> favoritesList;
+    private static ArrayList<String> favoritesList;
     private OnItemClickListener onItemClickListener;
     public FavoritesAdapter(ArrayList<String> favoritesList) {
         this.favoritesList = favoritesList;
@@ -60,13 +60,33 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         favoritesList.addAll(newFavoritesList);
         notifyDataSetChanged();
     }
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         TextView favoriteTextView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             favoriteTextView = itemView.findViewById(android.R.id.text1);
-            Log.d("CurrencyDebug", "ViewHolder constructor - TextView reference: " + favoriteTextView);
+            itemView.setOnLongClickListener(this); // Set long click listener
         }
+        @Override
+        public boolean onLongClick(View v) {
+            if (onLongItemClickListener != null) {
+                int adapterPosition = getAdapterPosition();
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    onLongItemClickListener.onLongItemClick(adapterPosition);
+                    return true; // Consume the long click event
+                }
+            }
+            return false;
+        }
+    }
+    public interface OnLongItemClickListener {
+        void onLongItemClick(int position);
+    }
+    private static OnLongItemClickListener onLongItemClickListener;
+
+    public void setOnLongItemClickListener(OnLongItemClickListener listener) {
+        this.onLongItemClickListener = listener;
     }
 
 }

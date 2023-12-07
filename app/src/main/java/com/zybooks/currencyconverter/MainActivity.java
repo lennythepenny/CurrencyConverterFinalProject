@@ -282,8 +282,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked No button
-                // Do nothing, close the dialog
+                //Do nothing
             }
         });
         AlertDialog dialog = builder.create();

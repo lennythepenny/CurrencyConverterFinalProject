@@ -1,5 +1,6 @@
 package com.zybooks.currencyconverter;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +42,12 @@ public class FavoritesActivity extends AppCompatActivity {
             public void onItemClick(String selectedCurrency) {
                 // Show FunFactDialog when an item is clicked
                 FunFactDialog.show(FavoritesActivity.this, selectedCurrency);
+            }
+        });
+        favoritesAdapter.setOnLongItemClickListener(new FavoritesAdapter.OnLongItemClickListener() {
+            @Override
+            public void onLongItemClick(int position) {
+                showDeleteConfirmationDialog(position);
             }
         });
         Intent intent = getIntent();
@@ -110,12 +118,10 @@ public class FavoritesActivity extends AppCompatActivity {
         String fullName = convertCountryCodeToFullName(selectedCurrency);
         favoritesSet.add(fullName);
         favoritesAdapter.updateData(new ArrayList<>(favoritesSet));
-        //saveFavorites();
     }
     private void removeFromFavorites(int position) {
-        favoritesList.remove(position);
-        favoritesAdapter.notifyDataSetChanged();
-        //saveFavorites();
+        String removedCurrency = favoritesList.remove(position);
+        favoritesAdapter.updateData(new ArrayList<>(favoritesList));
     }
     private void saveFavorites() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -128,5 +134,27 @@ public class FavoritesActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         return settings.getStringSet("favoritesSet", new HashSet<>());
     }
+    private void showDeleteConfirmationDialog(int position) {
+        String selectedCurrency = favoritesList.get(position);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want to remove " + selectedCurrency + " from favorites?")
+                .setTitle("Remove Favorite");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                removeFromFavorites(position);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //Do nothing
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
 }
