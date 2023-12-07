@@ -15,4 +15,9 @@
         <item>SEK</item>
         <item>NZD</item>
     </string-array>
+    <string-array name="account_types_array">
+        <item>Premium</item>
+        <item>Free</item>
+    </string-array>
 </resources>
+

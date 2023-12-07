@@ -28,8 +28,6 @@
                 android:layout_gravity="center"
                 android:src="@drawable/xchange_black" />
 
-            <!-- Customize the top app bar content as needed -->
-
         </androidx.appcompat.widget.Toolbar>
 
         <ImageView
@@ -44,12 +42,11 @@
             android:orientation="vertical"
             android:background="@color/orange">
 
-            <!-- Add your account information layout here -->
             <TextView
                 android:id="@+id/textViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="25dp"
                 android:background="@color/orange"
                 android:text="@string/name_john_doe"
                 android:textSize="18sp" />
@@ -58,19 +55,33 @@
                 android:id="@+id/textViewEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="25dp"
                 android:background="@color/orange"
                 android:text="@string/email_john_doe_example_com"
                 android:textSize="18sp" />
-
             <TextView
-                android:id="@+id/textViewAccountType"
+                android:id="@+id/textViewChangePassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="25dp"
                 android:background="@color/orange"
-                android:text="@string/account_type_premium"
+                android:text="@string/password"
                 android:textSize="18sp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/orange">
+
+                <TextView
+                    android:id="@+id/textViewAccountType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/account_type_premium"
+                    android:textSize="18sp" />
+
+            </RelativeLayout>
 
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>

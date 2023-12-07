@@ -34,7 +34,7 @@ public class FunFactDialog {
             case "British Pound Sterling":
                 return "The British Pound Sterling, often referred to as the Pound, is the oldest currency still in use today. Its symbol, £, comes from the letter 'L,' an abbreviation for the ancient Roman unit of weight, libra.";
             case "Australian Dollar":
-                return "Australian Dollar";
+                return "Australia leads the way when it comes to the security and durability of its money. It was the first country to issue polymer banknotes in 1988.";
             case "Canadian Dollar":
                 return "The Canadian Dollar has many nicknames including 'toonie', 'huard', and buck'!";
             case "Swiss Franc":
