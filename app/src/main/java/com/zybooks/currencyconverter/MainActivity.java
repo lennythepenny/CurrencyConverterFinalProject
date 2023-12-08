@@ -15,16 +15,13 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Currency;
-import java.util.Locale;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -42,7 +39,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //Initializing all views
         favoritesList = new ArrayList<>();
         Spinner currencyOne = findViewById(R.id.currencyOne);
         Spinner currencyTwo = findViewById(R.id.currencyTwo);
@@ -50,7 +47,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         Button clearButton2 = findViewById(R.id.clearButton2);
         ImageView favoriteBorder = findViewById(R.id.favoriteBorder);
         swapButton = findViewById(R.id.swapVert);
-
+        //Adding to favorites activity
         Intent intent = getIntent();
         if (intent.hasExtra("selectedCurrency")) {
             String selectedCurrency = intent.getStringExtra("selectedCurrency");
@@ -64,6 +61,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             favoritesIntent.putExtra("selectedCurrency", selectedCurrency);
             favoritesLauncher.launch(favoritesIntent);
         });
+        //Creating bottom navigation bar with the options to go to another activity
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavBar);
 
         bottomNavigationView.setOnItemSelectedListener(
@@ -90,74 +88,75 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                     }
                 });
 
-        // Initialize spinners with currency options
+        //Initialize spinners with currency options
         ArrayAdapter<CharSequence> currencyAdapter = ArrayAdapter.createFromResource(this, R.array.currencies_array, android.R.layout.simple_spinner_item);
         currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         currencyOne.setAdapter(currencyAdapter);
         currencyTwo.setAdapter(currencyAdapter);
 
-        // Set default currencies
+        //Set default currencies
         setDefaultCurrencies(currencyAdapter, currencyOne, currencyTwo);
 
         currencyOne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Handle current currency selection
+                //First currency selection
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // Do nothing
+                //Do nothing
             }
         });
 
         currencyTwo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Handle final currency selection
+                //Second currency selection
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // Do nothing
+                //Do nothing
             }
         });
+        //Listener to call convert currency when convert button clicked
         convertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 convertCurrency();
             }
         });
-
+        //Listener to call clearDialog when clear button clicked
         clearButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showClearConfirmationDialog();
             }
         });
-
+        //Unfilled heart favorite button when clicked favorites is added to favorites activity
         favoriteBorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Add animation for fading out
+                //Animation for fading out
                 String sourceCurrency = currencyOne.getSelectedItem().toString();
                 addToFavorites(sourceCurrency);
                 ObjectAnimator fadeOut = ObjectAnimator.ofFloat(favoriteBorder, "alpha", 1.0f, 0.0f);
-                fadeOut.setDuration(250); // Faster animation, adjust as needed
+                fadeOut.setDuration(250);
 
                 fadeOut.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        // Toggle favorite state
+                        //Favorite state
                         isFavorite = !isFavorite;
 
-                        // Change the image resource based on the state
+                        //Change the image based on the state
                         if (isFavorite) {
                             favoriteBorder.setImageResource(R.drawable.favorite_filled);
                             String selectedCurrency = currencyOne.getSelectedItem().toString();
                             addToFavorites(selectedCurrency);
 
-                            // Pass the selected currency to FavoritesActivity
+                            //Pass the selected currency to FavoritesActivity
                             Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
                             favoritesIntent.putExtra("selectedCurrency", selectedCurrency);
                             favoritesLauncher.launch(favoritesIntent);
@@ -165,7 +164,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                             favoriteBorder.setImageResource(R.drawable.favorite_border);
                         }
 
-                        // Add animation for fading in
+                        //Animation for fading in
                         ObjectAnimator fadeIn = ObjectAnimator.ofFloat(favoriteBorder, "alpha", 0.0f, 1.0f);
                         fadeIn.setDuration(250); // Faster animation, adjust as needed
                         fadeIn.start();
@@ -175,7 +174,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                 fadeOut.start();
             }
         });
-
+        //Rotating the swap button
         swapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -184,6 +183,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             }
         });
     }
+    //Converting the currency code to a full name
     private String convertCountryCodeToFullName(String countryCode) {
         switch (countryCode) {
             case "USD":
@@ -210,6 +210,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                 return countryCode;
         }
     }
+    //Adding to favorites activity
     private void addToFavorites(String selectedCurrency) {
         Log.d("CurrencyDebug", "Adding to favorites: " + selectedCurrency);
         String fullName = convertCountryCodeToFullName(selectedCurrency);
@@ -222,7 +223,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             Log.d("CurrencyDebug", "Currency is already in favorites: " + selectedCurrency);
         }
     }
-
+    //Default currencies when app is opened
     private void setDefaultCurrencies(ArrayAdapter<CharSequence> adapter, Spinner currencyOne, Spinner currencyTwo) {
         CharSequence defaultCurrencyOne = "USD";
         CharSequence defaultCurrencyTwo = "EUR";
@@ -233,6 +234,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         currencyOne.setSelection(positionCurrencyOne);
         currencyTwo.setSelection(positionCurrencyTwo);
     }
+    //Converting a currency based on the first and second spinner
     private void convertCurrency() {
         EditText amountEditText = findViewById(R.id.firstCurrency);
         String amountString = amountEditText.getText().toString();
@@ -267,7 +269,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             // Handle the case where either sourceCurrency or targetCurrency is not a valid currency code
         }
     }
-
+    //Confirmation dialog box when clear is clicked
     private void showClearConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to clear?")
@@ -288,7 +290,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
+    //Clearing all the field when user confirms to clear the activity
     private void clearFieldsConfirmed() {
         EditText amountEditText = findViewById(R.id.firstCurrency);
         EditText amountEditText2 = findViewById(R.id.secondCurrency);
@@ -304,7 +306,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         resultTextView.setText("");
         favoriteBorder.setImageResource(R.drawable.favorite_border);
     }
-
+    //Swapping currencies when swap button clicked
     private void swapCurrencies(Spinner currencyOne, Spinner currencyTwo) {
         Spinner spinCurrencyOne = findViewById(R.id.currencyOne);
         Spinner spinCurrencyTwo = findViewById(R.id.currencyTwo);
@@ -315,6 +317,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
         currencyOne.setSelection(selectedCurrencyTwo);
         currencyTwo.setSelection(selectedCurrencyOne);
     }
+    //Rotate function for swap button
     private void rotateButton() {
         float fromDegrees = swapButton.getRotation();
         float toDegrees = isRotated ? 0.0f : 180.0f; // Rotate back to 0 if already rotated
@@ -334,6 +337,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
             }
         });
     }
+    //Favorites getting added to favorites activity
     private final ActivityResultLauncher<Intent> favoritesLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -347,7 +351,7 @@ public class MainActivity<MenuItem> extends AppCompatActivity {
                 }
             }
     );
-
+    //Getting exchange rate for convert currency
     private double getExchangeRate(String sourceCurrency, String targetCurrency) {
         Log.d("CurrencyDebug", "Source Currency: " + sourceCurrency);
         Log.d("CurrencyDebug", "Target Currency: " + targetCurrency);

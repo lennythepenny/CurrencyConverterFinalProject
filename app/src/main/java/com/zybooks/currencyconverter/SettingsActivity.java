@@ -5,25 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.content.Context;
-import android.content.res.Resources;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.zybooks.currencyconverter.FavoritesActivity;
-import com.zybooks.currencyconverter.LocaleHelper;
-import com.zybooks.currencyconverter.MainActivity;
-import com.zybooks.currencyconverter.R;
-
 import java.util.ArrayList;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -41,14 +30,14 @@ public class SettingsActivity extends AppCompatActivity {
         messageView = (TextView) findViewById(R.id.textView);
         btnHindi = findViewById(R.id.btnHindi);
         btnEnglish = findViewById(R.id.btnEnglish);
-        // Switch for dark mode using SwitchCompat
+        //Dark mode option
         SwitchCompat darkModeSwitch = findViewById(R.id.darkModeSwitch);
         darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                // Switch to dark mode
+                //Dark mode
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             } else {
-                // Switch to light mode
+                //Light mode
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
             recreate(); // Recreate the activity to apply the theme immediately
@@ -70,6 +59,7 @@ public class SettingsActivity extends AppCompatActivity {
                 messageView.setText(resources.getString(R.string.language));
             }
         });
+        //Navigating to different activities
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavBar);
 
         bottomNavigationView.setOnItemSelectedListener(

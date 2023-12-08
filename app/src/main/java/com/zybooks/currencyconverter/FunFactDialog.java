@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 * Fun Fact Implemented!
 * */
 public class FunFactDialog {
-
+    //Dialog that shows the fun fact
     public static void show(Context context, String currency) {
         String funFact = getFunFactForCurrency(currency);
 
@@ -16,13 +16,12 @@ public class FunFactDialog {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // Dismiss the dialog
                         dialogInterface.dismiss();
                     }
                 })
                 .show();
     }
-
+    //Different funfacts based on the currency clicked
     private static String getFunFactForCurrency(String currency) {
         switch (currency) {
             case "United States Dollar":

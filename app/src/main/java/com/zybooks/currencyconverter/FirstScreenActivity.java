@@ -3,12 +3,8 @@ package com.zybooks.currencyconverter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.PopupMenu;
-import android.widget.Toast;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,8 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 public class FirstScreenActivity extends AppCompatActivity {
-    private ArrayList<String> favoritesList;
-
+    //First activity user sees when you click start converting button it starts the MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,12 +26,12 @@ public class FirstScreenActivity extends AppCompatActivity {
         startMainActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create an Intent to start MainActivity
                 Intent intent = new Intent(FirstScreenActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
     }
+    //Creating the menu bar option in first activity if returning user
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.options_menu_bar, menu);

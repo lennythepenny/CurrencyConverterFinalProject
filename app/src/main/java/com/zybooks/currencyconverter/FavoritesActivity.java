@@ -4,8 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -27,7 +25,7 @@ public class FavoritesActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
-
+        //Setting the favorites list, if we have previous favorites it is loaded here
         favoritesSet = loadFavorites();
         favoritesList = new ArrayList<>(favoritesSet);
         favoritesAdapter = new FavoritesAdapter(favoritesList);
@@ -44,20 +42,20 @@ public class FavoritesActivity extends AppCompatActivity {
                 FunFactDialog.show(FavoritesActivity.this, selectedCurrency);
             }
         });
+        //Deleting the currency from the list
         favoritesAdapter.setOnLongItemClickListener(new FavoritesAdapter.OnLongItemClickListener() {
             @Override
             public void onLongItemClick(int position) {
                 showDeleteConfirmationDialog(position);
             }
         });
+        //Launching the activity through the bottom nav bar and making sure it is populated with the previous data
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra("selectedCurrency")) {
                 String selectedCurrency = intent.getStringExtra("selectedCurrency");
                 addToFavorites(selectedCurrency);
             } else if (intent.hasExtra("favoritesList")) {
-                // If the activity is launched through bottom navigation
-                // and has a list of favorites, update the RecyclerView
                 ArrayList<String> updatedFavoritesList = intent.getStringArrayListExtra("favoritesList");
                     favoritesList.clear();
                     favoritesList.addAll(updatedFavoritesList);
@@ -88,6 +86,7 @@ public class FavoritesActivity extends AppCompatActivity {
                     }
                 });
     }
+    //Helper function to make favorites display more detailed than three letter currency code
     private String convertCountryCodeToFullName(String countryCode) {
         switch (countryCode) {
             case "USD":
@@ -114,26 +113,23 @@ public class FavoritesActivity extends AppCompatActivity {
                 return countryCode;
         }
     }
+    //Adding to favorites list view for the activity
     public void addToFavorites(String selectedCurrency) {
         String fullName = convertCountryCodeToFullName(selectedCurrency);
         favoritesSet.add(fullName);
         favoritesAdapter.updateData(new ArrayList<>(favoritesSet));
     }
+    //Removing from favorites list view for the activity
     private void removeFromFavorites(int position) {
         String removedCurrency = favoritesList.remove(position);
         favoritesAdapter.updateData(new ArrayList<>(favoritesList));
     }
-    private void saveFavorites() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.remove("favoritesSet").apply();
-        editor.putStringSet("favoritesSet", favoritesSet);
-        editor.apply();
-    }
+    //Loading previous favorites if needed
     private Set<String> loadFavorites() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         return settings.getStringSet("favoritesSet", new HashSet<>());
     }
+    //Delete confirmation for favorites
     private void showDeleteConfirmationDialog(int position) {
         String selectedCurrency = favoritesList.get(position);
 
@@ -151,10 +147,7 @@ public class FavoritesActivity extends AppCompatActivity {
                 //Do nothing
             }
         });
-
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
 }

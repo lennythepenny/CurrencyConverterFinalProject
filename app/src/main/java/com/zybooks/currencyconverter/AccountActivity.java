@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -69,6 +68,7 @@ public class AccountActivity extends AppCompatActivity {
         textViewAccountType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Account dialog box
                 showAccountTypeDialog();
             }
         });
@@ -76,22 +76,26 @@ public class AccountActivity extends AppCompatActivity {
         textViewName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Name dialog box
                 showChangeNameDialog();
             }
         });
         textViewEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Email dialog box
                 showChangeEmailDialog();
             }
         });
         textViewChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Password dialog box
                 showChangePasswordDialog();
             }
         });
     }
+    //Account type dialog with a spinner
     private void showAccountTypeDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_account_type, null);
@@ -131,6 +135,7 @@ public class AccountActivity extends AppCompatActivity {
 
         dialog.show();
     }
+    //Showing the name with the buttons
     private void showChangeNameDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_change_name, null);
@@ -156,6 +161,7 @@ public class AccountActivity extends AppCompatActivity {
 
         dialog.show();
     }
+    //Showing the email with the buttons
     private void showChangeEmailDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_change_email, null);
@@ -181,6 +187,7 @@ public class AccountActivity extends AppCompatActivity {
 
         dialog.show();
     }
+    //Showing the password with the buttons
     private void showChangePasswordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_change_password, null);
@@ -195,24 +202,17 @@ public class AccountActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
 
         btnConfirmChangePassword.setOnClickListener(v -> {
-            // Handle confirmation logic here
             String currentPassword = editTextCurrentPassword.getText().toString();
             String newPassword = editTextNewPassword.getText().toString();
             String confirmNewPassword = editTextConfirmNewPassword.getText().toString();
-
-            // Perform password change logic (e.g., validate passwords, update database)
-            // For demonstration purposes, let's assume validation passes, and the password is updated.
-
-            // Close the dialog
             dialog.dismiss();
         });
 
         btnCancelChangePassword.setOnClickListener(v -> {
-            // Handle cancellation logic here
+            //Cancel
             dialog.dismiss();
         });
 
         dialog.show();
     }
-
 }
